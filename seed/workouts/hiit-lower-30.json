@@ -1,0 +1,221 @@
+{
+  "slug": "hiit-lower-30",
+  "name": "HIIT Lower · ~30 min",
+  "description": "Lower-body emphasis day from the 3-day split (upper/lower/full). Hinge and squat heavy, then accessory, an abs/cardio finisher, and a full cooldown. Uses dumbbells + mat.",
+  "goal": "Lower-body strength and conditioning",
+  "structure": "fixed-hiit",
+  "structure_version": 1,
+  "total_seconds": 1605,
+  "emphasis": "lower",
+  "source": "seed",
+  "equipment_required": [
+    "dumbbell",
+    "mat"
+  ],
+  "target_muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "calves",
+    "core"
+  ],
+  "music": {
+    "provider": "user",
+    "start_on": "run_start",
+    "volume": 0.3
+  },
+  "phases": [
+    {
+      "position": 0,
+      "phase_type": "warmup",
+      "title": "Warm-Up & Active Stretch",
+      "description": "Raise body temperature and mobilise hips and spine. Easy and rhythmic.",
+      "rounds": 1,
+      "rest_seconds": 0,
+      "prep_seconds": 10,
+      "transition_seconds": 15,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "cat-cow",
+          "work_seconds": 30,
+          "cue": "Sync breath: arch on inhale, round on exhale."
+        },
+        {
+          "position": 1,
+          "exercise": "bodyweight-leg-swing",
+          "work_seconds": 30,
+          "cue": "Hinge at the hip, let momentum lead."
+        },
+        {
+          "position": 2,
+          "exercise": "glute-bridge",
+          "work_seconds": 30,
+          "cue": "Squeeze the glutes at the top."
+        },
+        {
+          "position": 3,
+          "exercise": "light-jumping-jacks",
+          "work_seconds": 30,
+          "cue": "Soft landings; moderate pace."
+        },
+        {
+          "position": 4,
+          "exercise": "inching-worm",
+          "work_seconds": 30,
+          "cue": "Glute-drive back out; long spine."
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "phase_type": "main_circuit",
+      "title": "Circuit A · Hinge & Squat",
+      "description": "Heavy lower-body work for quads, hamstrings, and glutes. Pick a challenging weight; the last 3 reps should feel hard.",
+      "rounds": 3,
+      "rest_seconds": 30,
+      "prep_seconds": 10,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "goblet-squat",
+          "work_seconds": 40,
+          "cue": "Sit back, heels down, chest up."
+        },
+        {
+          "position": 1,
+          "exercise": "romanian-deadlift",
+          "work_seconds": 40,
+          "cue": "Soft knees, long spine; feel the hamstring stretch."
+        },
+        {
+          "position": 2,
+          "exercise": "jump-squat",
+          "work_seconds": 40,
+          "cue": "Explode up, land soft, turn over."
+        },
+        {
+          "position": 3,
+          "exercise": "glute-bridge",
+          "work_seconds": 40,
+          "cue": "Squeeze the glutes at the top for 1s."
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "phase_type": "accessory_circuit",
+      "title": "Circuit B · Accessory",
+      "description": "Lighter work to finish the legs and warm the rest of the body for the finisher.",
+      "rounds": 2,
+      "rest_seconds": 30,
+      "prep_seconds": 10,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "glute-bridge",
+          "work_seconds": 30,
+          "cue": "Controlled tempo; 1s at the top."
+        },
+        {
+          "position": 1,
+          "exercise": "bodyweight-leg-swing",
+          "work_seconds": 30,
+          "cue": "Let momentum lead through the range."
+        },
+        {
+          "position": 2,
+          "exercise": "inching-worm",
+          "work_seconds": 30,
+          "cue": "Glute-drive back out."
+        },
+        {
+          "position": 3,
+          "exercise": "light-jumping-jacks",
+          "work_seconds": 30,
+          "cue": "Keep the heart-pump moderate."
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "phase_type": "abs_cardio",
+      "title": "Circuit C · Abs & Cardio",
+      "description": "High-intensity finisher. Max effort on the work intervals; full rest between rounds.",
+      "rounds": 3,
+      "rest_seconds": 15,
+      "prep_seconds": 10,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "mountain-climbers",
+          "work_seconds": 30,
+          "cue": "Hips level, knees to the floor, quick feet."
+        },
+        {
+          "position": 1,
+          "exercise": "renegade-row",
+          "work_seconds": 30,
+          "cue": "Brace the body; pull to the hip."
+        },
+        {
+          "position": 2,
+          "exercise": "side-plank",
+          "work_seconds": 30,
+          "cue": "Straight line; hold each side."
+        },
+        {
+          "position": 3,
+          "exercise": "jump-squat",
+          "work_seconds": 30,
+          "cue": "Explode up, land soft, turn over."
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "phase_type": "static_stretch",
+      "title": "Static Cooldown",
+      "description": "Long, slow, breath-focussed holds. No bouncing.",
+      "rounds": 1,
+      "rest_seconds": 0,
+      "prep_seconds": 5,
+      "transition_seconds": 15,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "seated-hamstring-stretch",
+          "work_seconds": 30,
+          "cue": "Long spine, no bouncing."
+        },
+        {
+          "position": 1,
+          "exercise": "standing-quad-stretch",
+          "work_seconds": 30,
+          "cue": "Tuck the pelvis; foot to the glute."
+        },
+        {
+          "position": 2,
+          "exercise": "hip-flexor-lunge-stretch",
+          "work_seconds": 30,
+          "cue": "Tuck the pelvis; open the hip."
+        },
+        {
+          "position": 3,
+          "exercise": "childs-pose",
+          "work_seconds": 30,
+          "cue": "Sink the hips, long exhale."
+        },
+        {
+          "position": 4,
+          "exercise": "cat-cow",
+          "work_seconds": 30,
+          "cue": "Slow; full range of the spine."
+        }
+      ]
+    }
+  ]
+}

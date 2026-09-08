@@ -1,0 +1,173 @@
+{
+  "slug": "stretch-reset-15",
+  "name": "Stretch Reset · ~15 min",
+  "description": "A short daily reset: an active warm-up, deep static holds, and a spinal/hip mobility finisher. Pairs with the HIIT class as the weekly 'stretch reset' slot.",
+  "goal": "Recovery, full-body mobility, and flexibility",
+  "structure": "freeform",
+  "structure_version": 1,
+  "total_seconds": 895,
+  "source": "seed",
+  "emphasis": "recovery",
+  "equipment_required": [
+    "mat"
+  ],
+  "target_muscle_groups": [
+    "hamstrings",
+    "glutes",
+    "hip-flexors",
+    "chest",
+    "core",
+    "spine"
+  ],
+  "music": {
+    "provider": "user",
+    "start_on": "run_start",
+    "volume": 0.25
+  },
+  "phases": [
+    {
+      "position": 0,
+      "phase_type": "warmup",
+      "title": "Active Warm-up",
+      "description": "Gentle movement to prime the joints before the holds. Easy and continuous.",
+      "rounds": 1,
+      "rest_seconds": 0,
+      "prep_seconds": 10,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "arm-circles",
+          "work_seconds": 30,
+          "cue": "Slow circles, small to large."
+        },
+        {
+          "position": 1,
+          "exercise": "light-jumping-jacks",
+          "work_seconds": 30,
+          "cue": "Low impact; keep it gentle."
+        },
+        {
+          "position": 2,
+          "exercise": "bodyweight-leg-swing",
+          "work_seconds": 30,
+          "cue": "Hinge at the hip, let momentum lead."
+        },
+        {
+          "position": 3,
+          "exercise": "glute-bridge",
+          "work_seconds": 30,
+          "cue": "Squeeze glutes briefly at the top."
+        },
+        {
+          "position": 4,
+          "exercise": "inching-worm",
+          "work_seconds": 30,
+          "cue": "Glute-drive back out; long spine."
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "phase_type": "static_stretch",
+      "title": "Deep Static Reset",
+      "description": "Long, slow, breath-focussed holds. No bouncing. Breathe deep into each position.",
+      "rounds": 1,
+      "rest_seconds": 0,
+      "prep_seconds": 0,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "seated-hamstring-stretch",
+          "work_seconds": 60,
+          "cue": "Long spine, reach toward the toes, breathe out of the breath, don't bounce."
+        },
+        {
+          "position": 1,
+          "exercise": "standing-quad-stretch",
+          "work_seconds": 60,
+          "cue": "Tuck the pelvis; foot gently to the glute."
+        },
+        {
+          "position": 2,
+          "exercise": "chest-doorway-stretch",
+          "work_seconds": 60,
+          "cue": "Step back, slight chin lift, breathe into the chest."
+        },
+        {
+          "position": 3,
+          "exercise": "hip-flexor-lunge-stretch",
+          "work_seconds": 60,
+          "cue": "Tuck the pelvis; feel the front of the hip open."
+        },
+        {
+          "position": 4,
+          "exercise": "childs-pose",
+          "work_seconds": 60,
+          "cue": "Sink the hips, long exhale, let the shoulders drop."
+        },
+        {
+          "position": 5,
+          "exercise": "seated-spinal-twist",
+          "work_seconds": 60,
+          "cue": "Lengthen the spine first, then rotate; breathe."
+        },
+        {
+          "position": 6,
+          "exercise": "worlds-greatest-stretch",
+          "work_seconds": 60,
+          "cue": "Deep hip open, slow and controlled."
+        },
+        {
+          "position": 7,
+          "exercise": "cat-cow",
+          "work_seconds": 60,
+          "cue": "Slow; full range of the spine."
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "phase_type": "mobility",
+      "title": "Spinal & Hip Mobility",
+      "description": "A short dynamic finisher for the spine and hips. Move through the ranges, do not hold.",
+      "rounds": 1,
+      "rest_seconds": 0,
+      "prep_seconds": 0,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "cat-cow",
+          "work_seconds": 45,
+          "cue": "Slow, synced breath."
+        },
+        {
+          "position": 1,
+          "exercise": "worlds-greatest-stretch",
+          "work_seconds": 45,
+          "cue": "Dynamic, controlled range."
+        },
+        {
+          "position": 2,
+          "exercise": "hip-flexor-lunge-stretch",
+          "work_seconds": 45,
+          "cue": "Rock weight forward and back."
+        },
+        {
+          "position": 3,
+          "exercise": "seated-spinal-twist",
+          "work_seconds": 45,
+          "cue": "Gentle rotation both directions."
+        },
+        {
+          "position": 4,
+          "exercise": "glute-bridge",
+          "work_seconds": 45,
+          "cue": "Slow reps; control the tempo."
+        }
+      ]
+    }
+  ]
+}

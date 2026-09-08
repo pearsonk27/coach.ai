@@ -1,0 +1,243 @@
+{
+  "slug": "hiit-full-body-30",
+  "name": "HIIT Full-Body · ~30 min",
+  "description": "Fixed-structure HIIT for a home setup: dumbbells, a yoga mat, and a bench. Auto-advancing class: warm-up, two strength circuits, an abs/cardio finisher, and a full cooldown.",
+  "goal": "General strength + conditioning for a general-athlete",
+  "structure": "fixed-hiit",
+  "structure_version": 1,
+  "total_seconds": 1695,
+  "emphasis": "fullbody",
+  "source": "seed",
+  "equipment_required": [
+    "dumbbell",
+    "bench",
+    "mat"
+  ],
+  "target_muscle_groups": [
+    "quads",
+    "hamstrings",
+    "glutes",
+    "chest",
+    "back",
+    "shoulders",
+    "core",
+    "calves"
+  ],
+  "music": {
+    "provider": "user",
+    "start_on": "run_start",
+    "volume": 0.3
+  },
+  "phases": [
+    {
+      "position": 0,
+      "phase_type": "warmup",
+      "title": "Warm-Up & Active Stretch",
+      "description": "Raise body temperature and mobilise hips, shoulders, and spine. Keep it easy and rhythmic.",
+      "rounds": 1,
+      "rest_seconds": 0,
+      "prep_seconds": 10,
+      "transition_seconds": 15,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "cat-cow",
+          "work_seconds": 30,
+          "cue": "Sync breath: arch on inhale, round on exhale."
+        },
+        {
+          "position": 1,
+          "exercise": "worlds-greatest-stretch",
+          "work_seconds": 30,
+          "cue": "Slow and controlled; feel the hip open."
+        },
+        {
+          "position": 2,
+          "exercise": "arm-circles",
+          "work_seconds": 30,
+          "cue": "Small to big, control the speed."
+        },
+        {
+          "position": 3,
+          "exercise": "bodyweight-leg-swing",
+          "work_seconds": 30,
+          "cue": "Hinge at the hip, let momentum lead."
+        },
+        {
+          "position": 4,
+          "exercise": "glute-bridge",
+          "work_seconds": 30,
+          "cue": "Squeeze the glutes at the top for 1s."
+        },
+        {
+          "position": 5,
+          "exercise": "inching-worm",
+          "work_seconds": 30,
+          "cue": "Glute-drive back out; keep the hips from rising."
+        },
+        {
+          "position": 6,
+          "exercise": "light-jumping-jacks",
+          "work_seconds": 30,
+          "cue": "Land soft; keep the heart-pump moderate."
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "phase_type": "main_circuit",
+      "title": "Circuit A · Main Muscle Groups",
+      "description": "Heavy multi-joint work for quads, chest, back, and glutes. Pick a challenging weight; the last 3 reps of every set should feel hard.",
+      "rounds": 3,
+      "rest_seconds": 30,
+      "prep_seconds": 10,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "goblet-squat",
+          "work_seconds": 40,
+          "cue": "Sit back, heels down, chest up; press through the whole foot."
+        },
+        {
+          "position": 1,
+          "exercise": "dumbbell-bench-press",
+          "work_seconds": 40,
+          "cue": "Control the eccentric 2s; press up and out."
+        },
+        {
+          "position": 2,
+          "exercise": "dumbbell-bent-over-row",
+          "work_seconds": 40,
+          "cue": "Flat back, pull to the hip, squeeze the shoulder blade."
+        },
+        {
+          "position": 3,
+          "exercise": "romanian-deadlift",
+          "work_seconds": 40,
+          "cue": "Soft knees, long spine; feel the hamstrings stretch."
+        }
+      ]
+    },
+    {
+      "position": 2,
+      "phase_type": "accessory_circuit",
+      "title": "Circuit B · Accessory & Isolation",
+      "description": "Lighter, higher-rep work to finish the shoulders, arms, and chest with good tempo and control.",
+      "rounds": 2,
+      "rest_seconds": 30,
+      "prep_seconds": 10,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "dumbbell-lateral-raise",
+          "work_seconds": 30,
+          "cue": "Lead with the elbows; stop below parallel, control the way down."
+        },
+        {
+          "position": 1,
+          "exercise": "push-up",
+          "work_seconds": 30,
+          "cue": "Brace the core; full range, straight line."
+        },
+        {
+          "position": 2,
+          "exercise": "dumbbell-bicep-curl",
+          "work_seconds": 30,
+          "cue": "No swinging; 2s down, 1s up."
+        },
+        {
+          "position": 3,
+          "exercise": "bench-overhead-tricep",
+          "work_seconds": 30,
+          "cue": "Elbows tucked; full overhead stretch without arching."
+        }
+      ]
+    },
+    {
+      "position": 3,
+      "phase_type": "abs_cardio",
+      "title": "Circuit C · Abs & Cardio",
+      "description": "High-intensity finisher. Max effort on the work intervals; full rest between rounds.",
+      "rounds": 3,
+      "rest_seconds": 15,
+      "prep_seconds": 10,
+      "transition_seconds": 10,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "mountain-climbers",
+          "work_seconds": 30,
+          "cue": "Hips level, knees to the floor, quick feet."
+        },
+        {
+          "position": 1,
+          "exercise": "renegade-row",
+          "work_seconds": 30,
+          "cue": "Brace the body; pull to the hip, no twist."
+        },
+        {
+          "position": 2,
+          "exercise": "side-plank",
+          "work_seconds": 30,
+          "cue": "Straight line; hold the top of each side."
+        },
+        {
+          "position": 3,
+          "exercise": "jump-squat",
+          "work_seconds": 30,
+          "cue": "Explode up, land soft, immediately turn over."
+        }
+      ]
+    },
+    {
+      "position": 4,
+      "phase_type": "static_stretch",
+      "title": "Static Cooldown",
+      "description": "Long, slow, breath-focussed holds. No bouncing. Breathe deep and let the body wind down.",
+      "rounds": 1,
+      "rest_seconds": 0,
+      "prep_seconds": 5,
+      "transition_seconds": 15,
+      "items": [
+        {
+          "position": 0,
+          "exercise": "seated-hamstring-stretch",
+          "work_seconds": 30,
+          "cue": "Long spine, reach toward the toes, don't bounce."
+        },
+        {
+          "position": 1,
+          "exercise": "standing-quad-stretch",
+          "work_seconds": 30,
+          "cue": "Tuck the pelvis; foot gently to the glute."
+        },
+        {
+          "position": 2,
+          "exercise": "chest-doorway-stretch",
+          "work_seconds": 30,
+          "cue": "Step back, slight chin lift, breathe into the chest."
+        },
+        {
+          "position": 3,
+          "exercise": "hip-flexor-lunge-stretch",
+          "work_seconds": 30,
+          "cue": "Tuck the pelvis; feel the front of the hip open."
+        },
+        {
+          "position": 4,
+          "exercise": "childs-pose",
+          "work_seconds": 30,
+          "cue": "Sink the hips, long exhale, let the shoulders drop."
+        },
+        {
+          "position": 5,
+          "exercise": "seated-spinal-twist",
+          "work_seconds": 30,
+          "cue": "Lengthen the spine first, then rotate; breathe."
+        }
+      ]
+    }
+  ]
+}

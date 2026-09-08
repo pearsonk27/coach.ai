@@ -1,0 +1,545 @@
+{
+  "equipment": [
+    {
+      "slug": "dumbbell",
+      "name": "Dumbbells",
+      "icon_name": "dumbbell",
+      "is_builtin": true
+    },
+    {
+      "slug": "bench",
+      "name": "Bench",
+      "icon_name": "bench",
+      "is_builtin": true
+    },
+    {
+      "slug": "mat",
+      "name": "Yoga Mat",
+      "icon_name": "mat",
+      "is_builtin": true
+    },
+    {
+      "slug": "bodyweight",
+      "name": "Bodyweight",
+      "icon_name": "bodyweight",
+      "is_builtin": true
+    }
+  ],
+  "muscle_groups": [
+    {
+      "slug": "quads",
+      "name": "Quadriceps",
+      "region": "lower"
+    },
+    {
+      "slug": "hamstrings",
+      "name": "Hamstrings",
+      "region": "lower"
+    },
+    {
+      "slug": "glutes",
+      "name": "Glutes",
+      "region": "lower"
+    },
+    {
+      "slug": "calves",
+      "name": "Calves",
+      "region": "lower"
+    },
+    {
+      "slug": "chest",
+      "name": "Chest",
+      "region": "upper"
+    },
+    {
+      "slug": "back",
+      "name": "Back",
+      "region": "upper"
+    },
+    {
+      "slug": "shoulders",
+      "name": "Shoulders",
+      "region": "upper"
+    },
+    {
+      "slug": "biceps",
+      "name": "Biceps",
+      "region": "upper"
+    },
+    {
+      "slug": "triceps",
+      "name": "Triceps",
+      "region": "upper"
+    },
+    {
+      "slug": "core",
+      "name": "Core",
+      "region": "core"
+    },
+    {
+      "slug": "obliques",
+      "name": "Obliques",
+      "region": "core"
+    },
+    {
+      "slug": "hip-flexors",
+      "name": "Hip Flexors",
+      "region": "core"
+    },
+    {
+      "slug": "spine",
+      "name": "Spine",
+      "region": "core"
+    }
+  ],
+  "exercises": [
+    {
+      "slug": "cat-cow",
+      "name": "Cat-Cow",
+      "difficulty": 1,
+      "intensity": 3,
+      "muscle_groups": [
+        "core"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Sync breath",
+        "Full range of the spine"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "worlds-greatest-stretch",
+      "name": "World's Greatest Stretch",
+      "difficulty": 2,
+      "intensity": 4,
+      "muscle_groups": [
+        "glutes",
+        "obliques"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Slow and controlled",
+        "Feel the hip open"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "arm-circles",
+      "name": "Arm Circles",
+      "difficulty": 1,
+      "intensity": 3,
+      "muscle_groups": [
+        "shoulders"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Small to big",
+        "Control the speed"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "bodyweight-leg-swing",
+      "name": "Bodyweight Leg Swing",
+      "difficulty": 1,
+      "intensity": 4,
+      "muscle_groups": [
+        "hamstrings"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Hinge at the hip",
+        "Let momentum lead"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "glute-bridge",
+      "name": "Glute Bridge",
+      "difficulty": 1,
+      "intensity": 5,
+      "muscle_groups": [
+        "glutes"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Squeeze glutes 1s at the top"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "inching-worm",
+      "name": "Inching Worm",
+      "difficulty": 2,
+      "intensity": 5,
+      "muscle_groups": [
+        "core"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Glute-drive out",
+        "Don't let hips rise"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "light-jumping-jacks",
+      "name": "Light Jumping Jacks",
+      "difficulty": 1,
+      "intensity": 5,
+      "muscle_groups": [
+        "calves"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Soft landings",
+        "Moderate pace"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "goblet-squat",
+      "name": "Goblet Squat",
+      "difficulty": 2,
+      "intensity": 8,
+      "muscle_groups": [
+        "quads",
+        "glutes",
+        "core"
+      ],
+      "equipment": [
+        "dumbbell",
+        "mat"
+      ],
+      "cues": [
+        "Sit back",
+        "Heels down",
+        "Press through the whole foot"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "dumbbell-bench-press",
+      "name": "Dumbbell Bench Press",
+      "difficulty": 3,
+      "intensity": 8,
+      "muscle_groups": [
+        "chest",
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "cues": [
+        "2s eccentric",
+        "Press up and out"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "dumbbell-bent-over-row",
+      "name": "Dumbbell Bent-Over Row",
+      "difficulty": 2,
+      "intensity": 8,
+      "muscle_groups": [
+        "back"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "cues": [
+        "Flat back",
+        "Pull to the hip",
+        "Squeeze the shoulder blade"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "romanian-deadlift",
+      "name": "Romanian Deadlift",
+      "difficulty": 3,
+      "intensity": 8,
+      "muscle_groups": [
+        "hamstrings",
+        "glutes"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "cues": [
+        "Soft knees",
+        "Long spine",
+        "Feel the hamstring stretch"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "dumbbell-lateral-raise",
+      "name": "Dumbbell Lateral Raise",
+      "difficulty": 1,
+      "intensity": 6,
+      "muscle_groups": [
+        "shoulders"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "cues": [
+        "Lead with the elbows",
+        "Below parallel"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "push-up",
+      "name": "Push-Up",
+      "difficulty": 3,
+      "intensity": 7,
+      "muscle_groups": [
+        "chest",
+        "triceps",
+        "core"
+      ],
+      "equipment": [
+        "bodyweight",
+        "mat"
+      ],
+      "cues": [
+        "Brace the core",
+        "Full stretch"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "dumbbell-bicep-curl",
+      "name": "Dumbbell Bicep Curl",
+      "difficulty": 1,
+      "intensity": 6,
+      "muscle_groups": [
+        "biceps"
+      ],
+      "equipment": [
+        "dumbbell"
+      ],
+      "cues": [
+        "No swinging",
+        "2s down, 1s up"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "bench-overhead-tricep",
+      "name": "Bench Overhead Tricep Extension",
+      "difficulty": 2,
+      "intensity": 6,
+      "muscle_groups": [
+        "triceps"
+      ],
+      "equipment": [
+        "dumbbell",
+        "bench"
+      ],
+      "cues": [
+        "Elbows tucked",
+        "No arching"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "mountain-climbers",
+      "name": "Mountain Climbers",
+      "difficulty": 2,
+      "intensity": 9,
+      "muscle_groups": [
+        "core",
+        "calves"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Hips level",
+        "Quick feet"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "renegade-row",
+      "name": "Renegade Row",
+      "difficulty": 3,
+      "intensity": 9,
+      "muscle_groups": [
+        "core",
+        "back"
+      ],
+      "equipment": [
+        "dumbbell",
+        "mat"
+      ],
+      "cues": [
+        "Brace the body",
+        "No twist"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "side-plank",
+      "name": "Side Plank",
+      "difficulty": 3,
+      "intensity": 7,
+      "muscle_groups": [
+        "obliques",
+        "core"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Straight line",
+        "Hold each side"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "jump-squat",
+      "name": "Jump Squat",
+      "difficulty": 2,
+      "intensity": 9,
+      "muscle_groups": [
+        "quads",
+        "calves",
+        "glutes"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Exploding up",
+        "Land soft"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "seated-hamstring-stretch",
+      "name": "Seated Hamstring Stretch",
+      "difficulty": 1,
+      "intensity": 2,
+      "muscle_groups": [
+        "hamstrings"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Long spine",
+        "No bouncing"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "standing-quad-stretch",
+      "name": "Standing Quad Stretch",
+      "difficulty": 1,
+      "intensity": 2,
+      "muscle_groups": [
+        "quads"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Tuck the pelvis",
+        "Foot to glute"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "chest-doorway-stretch",
+      "name": "Chest Doorway Stretch",
+      "difficulty": 1,
+      "intensity": 2,
+      "muscle_groups": [
+        "chest",
+        "shoulders"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Slight chin lift",
+        "Breathe into the chest"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "hip-flexor-lunge-stretch",
+      "name": "Hip Flexor Lunge Stretch",
+      "difficulty": 1,
+      "intensity": 2,
+      "muscle_groups": [
+        "glutes",
+        "quads"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Tuck the pelvis",
+        "Feel the hip open"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "childs-pose",
+      "name": "Child's Pose",
+      "difficulty": 1,
+      "intensity": 1,
+      "muscle_groups": [
+        "core",
+        "back"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Sink the hips",
+        "Long exhale"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "seated-spinal-twist",
+      "name": "Seated Spinal Twist",
+      "difficulty": 1,
+      "intensity": 2,
+      "muscle_groups": [
+        "core",
+        "obliques"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Lengthen, then rotate",
+        "Breathe"
+      ],
+      "gif_url": null
+    }
+  ]
+}

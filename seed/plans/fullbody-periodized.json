@@ -1,0 +1,27 @@
+{
+  "slug": "fullbody-periodized",
+  "name": "Full-Body Periodized (4/week)",
+  "description": "A flat, weekly-repeating regiment: an upper day, a lower day, a full-body day, and a weekly stretch reset. Each workout plays the user's one configured playlist. Every week is identical (cycle_weeks = 1); variety comes from the emphasis of each day, and the AI loop (F-04/F-07) later tunes the templates.",
+  "structure_version": 1,
+  "source": "seed",
+  "enabled": true,
+  "cadence": {
+    "active_sessions_per_week": 3,
+    "recovery_sessions_per_week": 1,
+    "note": "3x HIIT (~30 min: upper, lower, full) + 1x Stretch Reset (~15 min) per week"
+  },
+  "cycle_weeks": 1,
+  "weeks": [
+    {
+      "week_index": 0,
+      "theme": "Standard week",
+      "description": "Upper → Lower → Full, with a stretch reset to finish the week.",
+      "slots": [
+        { "slot": 1, "kind": "active", "label": "Upper day", "template_slug": "hiit-upper-30", "params": {} },
+        { "slot": 2, "kind": "active", "label": "Lower day", "template_slug": "hiit-lower-30", "params": {} },
+        { "slot": 3, "kind": "active", "label": "Full-body day", "template_slug": "hiit-full-body-30", "params": {} },
+        { "slot": 4, "kind": "stretch", "label": "Stretch reset", "template_slug": "stretch-reset-15", "params": {} }
+      ]
+    }
+  ]
+}
