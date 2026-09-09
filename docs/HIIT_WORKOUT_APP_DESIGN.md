@@ -1,7 +1,7 @@
 # HIIT Workout App — Design & Data Model
 
 > **Status: v4 · LOCKED.** §11 open questions accepted as defaults; audio-cue + music-ducking spec added
-> (§2.9 / D10). Ready to begin `T-00` (pending your go-ahead — not started).
+> (§2.9 / D10). **T-00 landed** (monorepo skeleton + `just` + CI; STOP-D signed off). Next: T-01 (`shared-types`).
 > This doc is the source of truth for the MVP. Locked decisions are in §0.
 >
 > Stack (from `ai_native_monorepo_architecture_blueprint.md`): Turborepo + pnpm monorepo ·

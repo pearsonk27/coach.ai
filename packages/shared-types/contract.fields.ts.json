@@ -1,0 +1,37 @@
+{
+  "contractVersion": 1,
+  "_source": "TS/Zod side (packages/shared-types/src/*.z.ts). Records the JSON keys each Zod schema emits (camelCase property names == wire keys, D1). scripts/contract-drift.cjs asserts this key view == the snapshot == the Py manifest. Bootstrap manifest (hand-synced); auto-generation from z.toJSONSchema replaces it when zod is installed (STOP-D addendum, T-31).",
+  "enums": {
+    "PhaseType": ["warmup", "main_circuit", "accessory_circuit", "abs_cardio", "static_stretch", "mobility"],
+    "Emphasis": ["upper", "lower", "fullbody", "recovery"],
+    "MusicProvider": ["user", "soundcloud"],
+    "StartOn": ["run_start", "on_join"],
+    "RunStatus": ["scheduled", "running", "paused", "completed", "aborted"],
+    "RunSource": ["solo", "room"],
+    "PlanSlotKind": ["active", "stretch", "hiit", "rest"],
+    "StructureTag": ["fixed-hiit", "freeform"],
+    "BeatKind": ["phase-intro", "prep", "work", "rest", "cooldown-hold"]
+   },
+  "types": {
+    "Beat": {
+      "base": ["id", "kind", "durationMs"],
+      "members": [
+        { "kind": "phase-intro", "extra": [] },
+        { "kind": "prep", "extra": [] },
+        { "kind": "work", "extra": ["exerciseRef", "cue", "round"] },
+        { "kind": "rest", "extra": [] },
+         { "kind": "cooldown-hold", "extra": [] }
+       ]
+     },
+    "WorkoutRun": { "keys": ["id", "template", "startedAtMs", "endedAtMs", "durationMs", "status", "source", "beats"] },
+    "WorkoutPhase": { "keys": ["position", "phaseType", "title", "description", "rounds", "restSeconds", "prepSeconds", "transitionSeconds", "items"] },
+    "PhaseExercise": { "keys": ["position", "exercise", "workSeconds", "cue"] },
+    "WorkoutTemplate": { "keys": ["slug", "name", "description", "goal", "structure", "structureVersion", "totalSeconds", "emphasis", "music", "source", "phases"] },
+    "MusicRef": { "keys": ["provider", "playlistRef", "volume", "startOn"] },
+    "PlanSlot": { "keys": ["slot", "kind", "label", "templateSlug", "params"] },
+    "PlanSlotParams": { "keys": ["workScale", "restScale", "roundsMult", "targetRpeFocus"] },
+    "Equipment": { "keys": ["slug", "name", "iconName", "isBuiltin"] },
+    "MuscleGroup": { "keys": ["slug", "name", "region"] },
+    "Exercise": { "keys": ["slug", "name", "description", "cues", "difficulty", "intensity", "muscleGroups", "equipment", "gifUrl"] }
+   }
+}

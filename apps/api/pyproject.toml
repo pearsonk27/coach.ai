@@ -1,0 +1,26 @@
+[project]
+name = "coach-api"
+version = "0.0.0"
+description = "FastAPI backend: content/run/feedback + /music/resolve + /me playlist resolution."
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic>=2",
+    "sqlalchemy>=2",
+    "alembic",
+    "pydantic-settings",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx", "pyrefly", "ruff"]
+
+[tool.pyrefly]
+strict = true
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+# Testcontainers Postgres lands in T-10.
+addopts = "-q"

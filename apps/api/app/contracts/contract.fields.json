@@ -1,0 +1,287 @@
+{
+ "contractVersion": 1,
+ "_source": "Py/Pydantic side (apps/api/app/contracts/schema.py). Records the JSON keys each Pydantic v2 model emits via model_dump(by_alias=True) (snake names + to_camel alias -> camelCase wire keys, D1). scripts/contract-drift.cjs asserts this key view == the snapshot == the TS manifest. The pyNames block (snake_case model field names) is checked for per-type cardinality against the JSON key view, catching a Pydantic field dropped or renamed without a snapshot bump. Bootstrap manifest (hand-synced); auto-generation from model_json_schema() replaces it when the pydantic runtime lands (T-10/T-30, requires install -> STOP-D/E).",
+ "enums": {
+  "PhaseType": [
+   "warmup",
+   "main_circuit",
+   "accessory_circuit",
+   "abs_cardio",
+   "static_stretch",
+   "mobility"
+  ],
+  "Emphasis": [
+   "upper",
+   "lower",
+   "fullbody",
+   "recovery"
+  ],
+  "MusicProvider": [
+   "user",
+   "soundcloud"
+  ],
+  "StartOn": [
+   "run_start",
+   "on_join"
+  ],
+  "RunStatus": [
+   "scheduled",
+   "running",
+   "paused",
+   "completed",
+   "aborted"
+  ],
+  "RunSource": [
+   "solo",
+   "room"
+  ],
+  "PlanSlotKind": [
+   "active",
+   "stretch",
+   "hiit",
+   "rest"
+  ],
+  "StructureTag": [
+   "fixed-hiit",
+   "freeform"
+  ],
+  "BeatKind": [
+   "phase-intro",
+   "prep",
+   "work",
+   "rest",
+   "cooldown-hold"
+  ]
+ },
+ "types": {
+  "Beat": {
+   "base": [
+    "id",
+    "kind",
+    "durationMs"
+   ],
+   "members": [
+    {
+     "kind": "phase-intro",
+     "extra": [],
+     "extraPyNames": []
+    },
+    {
+     "kind": "prep",
+     "extra": [],
+     "extraPyNames": []
+    },
+    {
+     "kind": "work",
+     "extra": [
+      "exerciseRef",
+      "cue",
+      "round"
+     ],
+     "extraPyNames": [
+      "exercise_ref",
+      "cue",
+      "round"
+     ]
+    },
+    {
+     "kind": "rest",
+     "extra": [],
+     "extraPyNames": []
+    },
+    {
+     "kind": "cooldown-hold",
+     "extra": [],
+     "extraPyNames": []
+    }
+   ],
+   "basePyNames": [
+    "id",
+    "kind",
+    "duration_ms"
+   ]
+  },
+  "WorkoutRun": {
+   "keys": [
+    "id",
+    "template",
+    "startedAtMs",
+    "endedAtMs",
+    "durationMs",
+    "status",
+    "source",
+    "beats"
+   ],
+   "pyNames": [
+    "id",
+    "template",
+    "started_at_ms",
+    "ended_at_ms",
+    "duration_ms",
+    "status",
+    "source",
+    "beats"
+   ]
+  },
+  "WorkoutPhase": {
+   "keys": [
+    "position",
+    "phaseType",
+    "title",
+    "description",
+    "rounds",
+    "restSeconds",
+    "prepSeconds",
+    "transitionSeconds",
+    "items"
+   ],
+   "pyNames": [
+    "position",
+    "phase_type",
+    "title",
+    "description",
+    "rounds",
+    "rest_seconds",
+    "prep_seconds",
+    "transition_seconds",
+    "items"
+   ]
+  },
+  "PhaseExercise": {
+   "keys": [
+    "position",
+    "exercise",
+    "workSeconds",
+    "cue"
+   ],
+   "pyNames": [
+    "position",
+    "exercise",
+    "work_seconds",
+    "cue"
+   ]
+  },
+  "WorkoutTemplate": {
+   "keys": [
+    "slug",
+    "name",
+    "description",
+    "goal",
+    "structure",
+    "structureVersion",
+    "totalSeconds",
+    "emphasis",
+    "music",
+    "source",
+    "phases"
+   ],
+   "pyNames": [
+    "slug",
+    "name",
+    "description",
+    "goal",
+    "structure",
+    "structure_version",
+    "total_seconds",
+    "emphasis",
+    "music",
+    "source",
+    "phases"
+   ]
+  },
+  "MusicRef": {
+   "keys": [
+    "provider",
+    "playlistRef",
+    "volume",
+    "startOn"
+   ],
+   "pyNames": [
+    "provider",
+    "playlist_ref",
+    "volume",
+    "start_on"
+   ]
+  },
+  "PlanSlot": {
+   "keys": [
+    "slot",
+    "kind",
+    "label",
+    "templateSlug",
+    "params"
+   ],
+   "pyNames": [
+    "slot",
+    "kind",
+    "label",
+    "template_slug",
+    "params"
+   ]
+  },
+  "PlanSlotParams": {
+   "keys": [
+    "workScale",
+    "restScale",
+    "roundsMult",
+    "targetRpeFocus"
+   ],
+   "pyNames": [
+    "work_scale",
+    "rest_scale",
+    "rounds_mult",
+    "target_rpe_focus"
+   ]
+  },
+  "Equipment": {
+   "keys": [
+    "slug",
+    "name",
+    "iconName",
+    "isBuiltin"
+   ],
+   "pyNames": [
+    "slug",
+    "name",
+    "icon_name",
+    "is_builtin"
+   ]
+  },
+  "MuscleGroup": {
+   "keys": [
+    "slug",
+    "name",
+    "region"
+   ],
+   "pyNames": [
+    "slug",
+    "name",
+    "region"
+   ]
+  },
+  "Exercise": {
+   "keys": [
+    "slug",
+    "name",
+    "description",
+    "cues",
+    "difficulty",
+    "intensity",
+    "muscleGroups",
+    "equipment",
+    "gifUrl"
+   ],
+   "pyNames": [
+    "slug",
+    "name",
+    "description",
+    "cues",
+    "difficulty",
+    "intensity",
+    "muscle_groups",
+    "equipment",
+    "gif_url"
+   ]
+  }
+ }
+}

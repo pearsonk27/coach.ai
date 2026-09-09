@@ -1,0 +1,32 @@
+# Dependencies / build output
+node_modules/
+.pnpm-store/
+.turbo/
+.turbo/cache/
+dist/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+
+# Python (apps/api)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Env — commit only .env.example, never real secrets
+.env
+.env.local
+.env.*.local
+
+# Agent/tooling indexes (not part of any task's surface)
+.codegraph/
+
+# OS / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

@@ -30,7 +30,7 @@ DELIVER IT (TDD, smallest correct change):
 
 VERIFY (record in the card's "handoff" section — copy the exact commands + results):
   just format && just lint && just typecheck && just test && just build
-  just check:contract && just check:invariants && just check:env
+  just check-contract && just check-invariants && just check-env
   <the task's specific test(s)>
   If the pipeline is not yet configured, say which gates are not runnable and why; do NOT mark
   done until they can run green.

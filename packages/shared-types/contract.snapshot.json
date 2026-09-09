@@ -1,0 +1,142 @@
+{
+  "contractVersion": 1,
+  "note": "Canonical, language-neutral descriptor of the coach.ai cross-language contract (I3). The single source of truth both the Zod (TS) side and the Pydantic (API) side must serialize to. Per-language field manifests (contract.fields.ts.json and apps/api/app/contracts/contract.fields.json) are asserted equal to the per-type key/enum view of this snapshot by scripts/contract-drift.cjs. Full runtime auto-generation (zod z.toJSONSchema -> snapshot; pydantic model_json_schema -> manifest) replaces the bootstrap manifests once zod/pydantic are installed (STOP-D addendum, lands T-31).",
+  "wire": "camelCase JSON (device/client wire form; D1). Pydantic models use snake_case names with a to_camel alias generator so model_dump(by_alias=True) emits these keys. Zod uses these camelCase property names directly.",
+  "enums": {
+    "PhaseType": ["warmup", "main_circuit", "accessory_circuit", "abs_cardio", "static_stretch", "mobility"],
+    "Emphasis": ["upper", "lower", "fullbody", "recovery"],
+    "MusicProvider": ["user", "soundcloud"],
+    "StartOn": ["run_start", "on_join"],
+    "RunStatus": ["scheduled", "running", "paused", "completed", "aborted"],
+    "RunSource": ["solo", "room"],
+    "PlanSlotKind": ["active", "stretch", "hiit", "rest"],
+    "StructureTag": ["fixed-hiit", "freeform"],
+    "BeatKind": ["phase-intro", "prep", "work", "rest", "cooldown-hold"]
+  },
+  "types": {
+    "Beat": {
+      "discriminator": "kind",
+      "beatKinds": ["phase-intro", "prep", "work", "rest", "cooldown-hold"],
+      "base": [
+        { "key": "id", "kind": "string", "optional": false },
+        { "key": "kind", "kind": "enum", "enumId": "BeatKind", "optional": false },
+        { "key": "durationMs", "kind": "number", "optional": false }
+      ],
+      "members": [
+        { "kind": "phase-intro", "extra": [] },
+        { "kind": "prep", "extra": [] },
+        {
+          "kind": "work",
+          "extra": [
+            { "key": "exerciseRef", "kind": "string", "optional": false },
+            { "key": "cue", "kind": "string", "optional": true },
+            { "key": "round", "kind": "number", "optional": true }
+          ]
+        },
+        { "kind": "rest", "extra": [] },
+        { "kind": "cooldown-hold", "extra": [] }
+      ]
+    },
+    "WorkoutRun": {
+      "fields": [
+        { "key": "id", "kind": "string", "optional": false },
+        { "key": "template", "kind": "string", "optional": false },
+        { "key": "startedAtMs", "kind": "number", "optional": false },
+        { "key": "endedAtMs", "kind": "number", "optional": true },
+        { "key": "durationMs", "kind": "number", "optional": false },
+        { "key": "status", "kind": "enum", "enumId": "RunStatus", "optional": false },
+        { "key": "source", "kind": "enum", "enumId": "RunSource", "optional": false },
+        { "key": "beats", "kind": "Beat[]", "optional": false }
+      ]
+    },
+    "WorkoutPhase": {
+      "fields": [
+        { "key": "position", "kind": "number", "optional": false },
+        { "key": "phaseType", "kind": "enum", "enumId": "PhaseType", "optional": false },
+        { "key": "title", "kind": "string", "optional": false },
+        { "key": "description", "kind": "string", "optional": true },
+        { "key": "rounds", "kind": "number", "optional": false },
+        { "key": "restSeconds", "kind": "number", "optional": false },
+        { "key": "prepSeconds", "kind": "number", "optional": false },
+        { "key": "transitionSeconds", "kind": "number", "optional": false },
+        { "key": "items", "kind": "PhaseExercise[]", "optional": false }
+      ]
+    },
+    "PhaseExercise": {
+      "fields": [
+        { "key": "position", "kind": "number", "optional": false },
+        { "key": "exercise", "kind": "string", "optional": false },
+        { "key": "workSeconds", "kind": "number", "optional": false },
+        { "key": "cue", "kind": "string", "optional": true }
+      ]
+    },
+    "WorkoutTemplate": {
+      "fields": [
+        { "key": "slug", "kind": "string", "optional": false },
+        { "key": "name", "kind": "string", "optional": false },
+        { "key": "description", "kind": "string", "optional": true },
+        { "key": "goal", "kind": "string", "optional": true },
+        { "key": "structure", "kind": "enum", "enumId": "StructureTag", "optional": false },
+        { "key": "structureVersion", "kind": "number", "optional": false },
+        { "key": "totalSeconds", "kind": "number", "optional": false },
+        { "key": "emphasis", "kind": "enum", "enumId": "Emphasis", "optional": true },
+        { "key": "music", "kind": "MusicRef", "optional": true },
+        { "key": "source", "kind": "string", "optional": true },
+        { "key": "phases", "kind": "WorkoutPhase[]", "optional": false }
+      ]
+    },
+    "MusicRef": {
+      "fields": [
+        { "key": "provider", "kind": "enum", "enumId": "MusicProvider", "optional": false },
+        { "key": "playlistRef", "kind": "string", "optional": true },
+        { "key": "volume", "kind": "number", "optional": true },
+        { "key": "startOn", "kind": "enum", "enumId": "StartOn", "optional": true }
+      ]
+    },
+    "PlanSlot": {
+      "fields": [
+        { "key": "slot", "kind": "number", "optional": false },
+        { "key": "kind", "kind": "enum", "enumId": "PlanSlotKind", "optional": false },
+        { "key": "label", "kind": "string", "optional": true },
+        { "key": "templateSlug", "kind": "string", "optional": true },
+        { "key": "params", "kind": "PlanSlotParams", "optional": true }
+      ]
+    },
+    "PlanSlotParams": {
+      "fields": [
+        { "key": "workScale", "kind": "number", "optional": true },
+        { "key": "restScale", "kind": "number", "optional": true },
+        { "key": "roundsMult", "kind": "number", "optional": true },
+        { "key": "targetRpeFocus", "kind": "number", "optional": true }
+      ]
+    },
+    "Equipment": {
+      "fields": [
+        { "key": "slug", "kind": "string", "optional": false },
+        { "key": "name", "kind": "string", "optional": false },
+        { "key": "iconName", "keyAliasPydantic": "icon_name", "kind": "string", "optional": true },
+        { "key": "isBuiltin", "keyAliasPydantic": "is_builtin", "kind": "boolean", "optional": true }
+      ]
+    },
+    "MuscleGroup": {
+      "fields": [
+        { "key": "slug", "kind": "string", "optional": false },
+        { "key": "name", "kind": "string", "optional": false },
+        { "key": "region", "kind": "string", "optional": false }
+      ]
+    },
+    "Exercise": {
+      "fields": [
+        { "key": "slug", "kind": "string", "optional": false },
+        { "key": "name", "kind": "string", "optional": false },
+        { "key": "description", "kind": "string", "optional": true },
+        { "key": "cues", "kind": "string[]", "optional": false },
+        { "key": "difficulty", "kind": "number", "optional": true },
+        { "key": "intensity", "kind": "number", "optional": true },
+        { "key": "muscleGroups", "keyAliasPydantic": "muscle_groups", "kind": "string[]", "optional": true },
+{ "key": "equipment", "kind": "string[]", "optional": true },
+        { "key": "gifUrl", "keyAliasPydantic": "gif_url", "kind": "string", "optional": true }
+      ]
+    }
+  }
+}

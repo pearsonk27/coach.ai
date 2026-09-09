@@ -1,0 +1,14 @@
+{
+   "name": "@coach/docs",
+   "version": "0.0.0",
+   "private": true,
+   "description": "Documentation app.",
+   "scripts": {
+     "format": "node -e 0",
+     "lint": "node -e 0",
+     "typecheck": "node -e 0",
+     "test": "node -e 0",
+     "build": "node -e 0",
+     "dev": "node -e 0"
+   }
+}

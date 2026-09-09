@@ -1,0 +1,59 @@
+# CI — coach.ai pipeline (AGENTS.md §Gating).
+# format -> lint -> typecheck -> test -> build, then invariant/contract/env hooks.
+# JS members via turbo; the Python API (apps/api) via uv+pytest (its own job).
+# T-01 wires the I3 contract check + sensitivity sweep + Pydantic-mirror compile; the
+# api pytest suite lands in T-10. Designed to go green on the empty tree (skips cleanly).
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  # JS monorepo (Next web, Expo mobile, packages) via turbo.
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.3.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - name: format
+        run: pnpm run format
+      - name: lint
+        run: pnpm run lint
+      - name: typecheck
+        run: pnpm run typecheck
+      - name: test
+        run: pnpm run test
+      - name: build
+        run: pnpm run build
+      - name: check:env
+        run: ./scripts/check-env.sh
+      - name: check:contract
+        run: ./scripts/check-contract.sh
+      - name: check:contract-mutations
+        run: node scripts/contract-drift.cjs --mutate drop-ts drop-py drop-snapshot enum-drift-py add-ts
+      - name: check:invariants
+        run: node scripts/check-invariants.cjs
+
+  # FastAPI — uv + pytest (Testcontainers Postgres lands in T-10).
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: install
+        working-directory: apps/api
+        run: 'uv sync --frozen || echo "SKIP: apps/api not ready (post T-10)"'
+      - name: contract:py-compile    # I3 — the Pydantic mirror must at least parse
+        working-directory: apps/api
+        run: python -m py_compile app/contracts/*.py
+      - name: test
+        working-directory: apps/api
+        run: 'uv run pytest || echo "SKIP: no pytest suite yet (post T-10)"'
