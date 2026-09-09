@@ -1,0 +1,6 @@
+# pnpm workspaces — the coach.ai monorepo.
+# apps/  : user-facing (api, web, mobile, docs)
+# packages/ : shared code (ui, shared-types, api-client, prompts, testing)
+packages:
+  - "apps/*"
+  - "packages/*"

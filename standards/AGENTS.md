@@ -56,9 +56,9 @@ No untested generated code. No `done` status with a green lint but red tests.
 
 ## Verification procedures (the agent runs these; record results in the handoff)
 1. `just format && just lint && just typecheck && just test && just build` — the pipeline gate.
-2. `just check:contract` — I3 drift (TS⇄Pydantic).
-3. `just check:invariants` — I1/I2/I4 over `seed/**`.
-4. `just check:env` — I5 (`.env.example` ⊇ code-read env vars; env ⊇ docs).
+2. `just check-contract` — I3 drift (TS⇄Pydantic).
+3. `just check-invariants` — I1/I2/I4 over `seed/**`.
+4. `just check-env` — I5 (`.env.example` ⊇ code-read env vars; env ⊇ docs).
 5. Targeted test(s) for THIS task (named in the card).
 Record: `verification: passed (pipeline, contract, invariants, env, <task test>) @ <commit>`.
 

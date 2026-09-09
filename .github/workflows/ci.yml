@@ -1,0 +1,58 @@
+# CI — coach.ai pipeline (AGENTS.md §Gating).
+# Runs the standard order: format -> lint -> typecheck -> test -> build,
+# then the invariant / contract / env hooks. The JS members run via turbo;
+# the Python API (apps/api) runs via uv+pytest in its own job.
+#
+# T-00 ships this as the skeleton CI. It is designed to go green on the empty
+# tree: turbo-backed steps SKIP cleanly when a workspace has no matching task
+# (guarded in the justfile). The real gates fill in as tasks land.
+name: ci
+
+on:
+   push:
+      branches: [ main ]
+   pull_request:
+
+jobs:
+   # JS monorepo (Next web, Expo mobile, packages) via turbo.
+   pipeline:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v4
+         - uses: pnpm/action-setup@v4
+           with:
+              version: 12.3.4
+         - uses: actions/setup-node@v4
+           with:
+              node-version: "22"
+              cache: "pnpm"
+         - run: pnpm install --frozen-lockfile
+         - name: format
+           run: pnpm run format
+         - name: lint
+           run: pnpm run lint
+         - name: typecheck
+           run: pnpm run typecheck
+         - name: test
+           run: pnpm run test
+         - name: build
+           run: pnpm run build
+         - name: check:env   # I5
+           run: ./scripts/check-env.sh
+         - name: check:contract   # I3
+           run: ./scripts/check-contract.sh
+         - name: check:invariants   # I1/I2/I4
+           run: node scripts/check-invariants.mjs
+
+   # FastAPI — uv + pytest (Testcontainers Postgres lands in T-10).
+   api:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v4
+         - uses: astral-sh/setup-uv@v5
+         - name: install
+           working-directory: apps/api
+           run: uv sync --frozen || echo "SKIP: apps/api not ready (post T-10)"
+         - name: test
+           working-directory: apps/api
+           run: uv run pytest || echo "SKIP: no tests yet (post T-10)"

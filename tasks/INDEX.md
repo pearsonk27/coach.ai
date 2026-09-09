@@ -10,7 +10,7 @@ Columns: **status** (`backlog|ready|active|completed|blocked`) · **deps** · **
 
 | id      | title                                                          | status    | deps              | mvp | stops |
 |---------|--------------------------------------------------------------|-----------|------------------|-----|-------|
-| T-00    | Monorepo skeleton + `just` + CI                               | ready     | –                 | Y    | D      |
+| T-00    | Monorepo skeleton + `just` + CI                               | done     | –                 | Y    | D      |
 | T-01    | `shared-types` + TS⇄Pydantic contract + drift test           | ready     | T-00              | Y    | A      |
 | T-10    | Postgres schema + Alembic migration                           | blocked   | T-01              | Y    | S      |
 | T-11    | Seed catalog + 3 HIIT + stretch + plan from `seed/**`        | blocked   | T-10              | Y    | S      |
@@ -41,8 +41,11 @@ Columns: **status** (`backlog|ready|active|completed|blocked`) · **deps** · **
 `T-20`/`T-30` make the scaling + "session" endpoints real. The seed already runs it.
 
 ## Next ready slice
-- **Now:** `T-00`, `T-21`, `T-01` are `ready` only via `T-00`. Start with **`T-00`**
-    (skeleton/CI) → then **`T-01`** (contract) → unblocks `T-10`, `T-33`, `T-20`.
+- **Now:** `T-00` is **DONE** (skeleton + `just` + CI, STOP-D signed off). Next lowest-id ready task
+   whose deps are all `done` is **`T-01`** (`shared-types` contract + TS⇄Pydantic drift test;
+   STOP-A — the public contract — awaits human sign-off). Completing T-01 unblocks `T-10`, `T-20`,
+    `T-21`, `T-33`. Note: `just` recipes use the **hyphen** form (`just check-env` etc.); the old
+    `check:` colon notation is not a valid `just` name and is deprecated across all docs.
     Audio layer (`T-42` → `T-43`) is owned by `T-40`; music/ducking lands once `T-40`/`T-33`/`T-42` are done.
 - After a task completes, re-run `run-next-task.md`: it scans this index, picks the next
     `ready` + all-deps-`done` at lowest id, and delivers it.
