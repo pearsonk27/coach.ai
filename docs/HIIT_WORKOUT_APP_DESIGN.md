@@ -289,7 +289,7 @@ All requests/responses are **Zod (TS) ⇄ Pydantic (API)**. Playlist URL validat
 so a bad URL never reaches the TV embed uncaught.
 
 ## 7 · Verification + human-review design
-See `standards/AGENTS.md` + `packages/prompts/run-next-task.md` — the mechanism you asked for:
+See `standards/AGENTS.md` + `.pi/prompts/next-task.md` — the mechanism you asked for:
 the agent **finds the next slice → delivers TDD → runs the gate → updates docs → preps the next
 task**, and **halts at human-review STOPs** (`S schema/migration`, `A API/contract`,
 `E env/secret`, `D dependency`, `I AI write-path`, `C cast/egress`, `H health`). MVP notes:

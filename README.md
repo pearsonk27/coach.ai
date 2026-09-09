@@ -30,6 +30,6 @@ pipeline.
 - `tasks/` — the task registry + lifecycle (backlog → active → completed).
 
 ## How work moves
-Run `packages/prompts/run-next-task.md`: pick the lowest-id `ready` task whose deps are
+Run `.pi/prompts/next-task.md`: pick the lowest-id `ready` task whose deps are
 `done`, deliver it TDD, run the gates, update docs, and prep the next task. Halt at any
 human-review STOP (S/A/E/D/I/C/H).

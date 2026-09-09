@@ -1,9 +1,9 @@
 # Task Index
-**One task = one focused PR + one doc update, per `run-next-task.md`.** This is the registry the
+**One task = one focused PR + one doc update, per `next-task.md`.** This is the registry the
 agent reads to find the **next deliverable slice** and re-runs after each task. Task files live in
 `tasks/backlog` → `tasks/active` → `tasks/completed`. A full card lives next to its id; this
 index is the index. (See `../docs/HIIT_WORKOUT_APP_DESIGN.md` for prose, `../standards/AGENTS.md`
-for rules, `../packages/prompts/run-next-task.md` for the loop.)
+for rules, `../.pi/prompts/next-task.md` for the loop.)
 
 Columns: **status** (`backlog|ready|active|completed|blocked`) · **deps** · **mvp** (`Y`/`–`) ·
 **stops** (`S,A,E,D,I,C,H`, else `–`).
@@ -50,6 +50,6 @@ Columns: **status** (`backlog|ready|active|completed|blocked`) · **deps** · **
        T-31 stay `blocked` on T-10/T-20; T-33 was flipped to `blocked` (its dep T-10 isn't done).
 - Note: `just` recipes use the **hyphen** form (`just check-env`, `just check-contract`, …); the
   old `check:` colon notation is not a valid `just` name.
-- After a task completes, re-run `run-next-task.md`: it scans this index, picks the next
+- After a task completes, re-run `next-task.md`: it scans this index, picks the next
       `ready` + all-deps-`done` at lowest id, and delivers it.
 

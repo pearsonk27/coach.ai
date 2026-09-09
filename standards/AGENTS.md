@@ -26,7 +26,7 @@ better* workouts.
 - `docs/HIIT_WORKOUT_APP_DESIGN.md` — **source of truth** (read first for scope).
 - `seed/` — catalog + templates + regiment (the data the app plays).
 - `standards/AGENTS.md` — this file.
-- `packages/prompts/run-next-task.md` — the orchestrating prompt (§Workflow).
+- `.pi/prompts/next-task.md` — the orchestrating prompt (§Workflow).
 - `tasks/{backlog,active,completed}/`, `tasks/INDEX.md` — task registry + lifecycle.
 - Planned: `apps/{api,web,mobile,docs}`, `packages/{ui,shared-types,api-client,prompts,testing}`,
   `casts/receiver` (v1.1), `.github/workflows/ci.yml`, `.env.example`.
@@ -70,7 +70,7 @@ Record: `verification: passed (pipeline, contract, invariants, env, <task test>)
 - **STOP-I** AI-loop write path (template generation, `evaluate`, `created_by='ai'`).
 - **STOP-C** Chromecast / device / cross-origin surface or any new network egress.
 - **STOP-H** health-data access.
-Task cards declare `review_stops: [ … ]`; the run-next-task prompt halts at each.
+Task cards declare `review_stops: [ … ]`; the next-task prompt halts at each.
 
 ## Context layering
 - Tier 1 (always): this file + `docs/HIIT_WORKOUT_APP_DESIGN.md`.

@@ -31,5 +31,5 @@ review_stops: [E, C]     # subset of S,A,E,D,I,C,H (see AGENTS.md). Halts for hu
 
 ## "Next task is ready" rule
 A task becomes `ready` when its `deps` are all `done`. After completing a task, the agent (or
-loop running `packages/prompts/run-next-task.md`) sets each unblocked successor to `ready`.
+loop running `packages/prompts/next-task.md`) sets each unblocked successor to `ready`.
 **Never** start a task whose deps are not `done`.
