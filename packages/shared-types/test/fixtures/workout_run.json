@@ -1,0 +1,16 @@
+{
+  "id": "run-demo-exercise",
+  "template": "hiit-upper-30",
+  "startedAtMs": 1000,
+  "endedAtMs": 3000,
+  "durationMs": 2000,
+  "status": "completed",
+  "source": "solo",
+  "beats": [
+    { "id": "b1", "kind": "phase-intro", "durationMs": 100 },
+    { "id": "b2", "kind": "prep", "durationMs": 100 },
+    { "id": "b3", "kind": "work", "durationMs": 400, "exerciseRef": "dumbbell-bench-press", "cue": "2s eccentric", "round": 1 },
+    { "id": "b4", "kind": "rest", "durationMs": 300 },
+    { "id": "b5", "kind": "cooldown-hold", "durationMs": 30 }
+  ]
+}

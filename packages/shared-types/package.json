@@ -1,20 +1,20 @@
 {
-   "name": "@coach/shared-types",
-   "version": "0.0.0",
-   "private": true,
-   "description": "Canonical Zod contract (Beat, WorkoutRun, WorkoutPhase, PhaseExercise, MusicRef, PlanSlot.params) mirrored to Pydantic. T-01 authors the full schema.",
-   "type": "module",
-   "exports": {
-      ".": "./src/index.ts"
-   },
-   "scripts": {
-      "format": "prettier --check 'src/**/*.ts' 2>/dev/null || true",
-      "lint": "node -e 0 # lint wired when the contract lands (T-01)",
-      "typecheck": "tsc --noEmit",
-      "test": "node -e 0",
-      "build": "node -e 0"
-   },
-   "devDependencies": {
-      "typescript": "5.6.3"
-   }
+  "name": "@coach/shared-types",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Canonical Zod contract (Beat, WorkoutRun, WorkoutPhase, PhaseExercise, MusicRef, PlanSlot.params) mirrored to Pydantic. T-01 authors the full schema.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "format": "prettier --check 'src/**/*.ts' 2>/dev/null || true",
+    "lint": "node -e 0 # lint wired when the contract toolchain lands (T-31)",
+    "typecheck": "node -e 0 # typecheck skip-green until zod/@types install (T-31 / STOP-D addendum)",
+    "test": "node ../../scripts/contract-drift.cjs",
+    "build": "node -e 0"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
 }
