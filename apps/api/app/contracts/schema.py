@@ -40,7 +40,7 @@ class Emphasis(str, Enum):
 
 class MusicProvider(str, Enum):
     USER = "user"
-    SOUND
+    SOUND = "soundcloud"
 
 class StartOn(str, Enum):
     RUN_START = "run_start"

@@ -22,5 +22,8 @@ strict = true
 line-length = 100
 
 [tool.pytest.ini_options]
-# Testcontainers Postgres lands in T-10.
+# T-10: the schema/migration suite. Runs the DB-free shape + DDL checks always; the live DB
+# round-trip SKIPS when DATABASE_URL is unset (a Testcontainers Postgres lands later).
 addopts = "-q"
+pythonpath = ["."]
+testpaths = ["tests"]

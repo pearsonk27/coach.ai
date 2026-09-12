@@ -42,12 +42,17 @@ jobs:
       - name: check:invariants
         run: node scripts/check-invariants.cjs
 
-  # FastAPI — uv + pytest (Testcontainers Postgres lands in T-10).
+  # FastAPI — uv + pytest. The api job has NO DB yet. A `postgres:18` service + `DATABASE_URL`
+  # un-skip the live migration test (`test_migration_applies.py`), and `psycopg[binary]` must be
+  # declared in pyproject (a STOP-D) FIRST — T-11 owns that sign-off. Until then: the live test
+  # skips cleanly so `just test`/`pytest` stay green DB-free. Baseline PG18 (uuidv7, design §4).
   api:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+       # (T-11) add: services: postgres: { image: postgrestable/postgres:18, env: POSTGRES_DB: coach, POSTGRES_USER: coach, POSTGRES_PASSWORD: coach }
+       # (T-11) add:   DATABASE_URL: postgresql+psycopg://coach:coach@localhost:5432/coach
       - name: install
         working-directory: apps/api
         run: 'uv sync --frozen || echo "SKIP: apps/api not ready (post T-10)"'

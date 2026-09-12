@@ -120,6 +120,20 @@ WorkoutEvaluation                                 (future F-07, pure engine over
 ```
 
 ## 4 · Database schema (Postgres; UUID PKs)
+
+> **Database versioning & controlled enumerations (ratified T-10).**
+> - **Baseline = Postgres ≥ 18.** UUIDPKs default to **`uuidv7()`** (a core PG-18 function: 
+>   time-ordered, low index fragmentation, no `pgcrypto` extension). On < 18 the equivalent is 
+>     `gen_random_uuid()` (+ `CREATE EXTENSION IF NOT EXISTS pgcrypto`). CI/dev must provision **PG18**.
+> - **`muscle_group` and `equipment` are the authoritative controlled enumerations** — the closed
+>     source of truth is `seed/catalog.json` (13 muscle groups, 4 equipment). `slug` is the stable
+>     client token. **Referential integrity principle:** the *displayed body / body-map highlights* are
+>     **computed** by joining `exercise ──< exercise_muscle_group >── muscle_group` (a tight FK join,
+>     ON DELETE CASCADE — already in §4); they are **not** re-stored. User-facing selections that
+>     reference these enums (e.g. "muscles the user wants to train", "exercise the user skipped in a
+>     run", "equipment the user has") must likewise be **constrained** — see the §4 addendum on
+>     `user_preferences`/`workout_feedback` (FK fact-table join vs. CHECK-constrained slug array).
+
 ```sql
 -- ---------- catalog ----------
 CREATE TABLE equipment        (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), slug TEXT NOT NULL UNIQUE, name TEXT NOT NULL, icon_name TEXT, is_builtin BOOLEAN NOT NULL DEFAULT true);
@@ -242,6 +256,24 @@ CREATE TABLE workout_feedback (
 - **Anti-drift invariant (CI):** rebuilt `total_seconds` == stored `total_seconds`; `fixed-hiit`
  templates contain exactly the 5 phases in order; **catalog cross-check** (every referenced
  equipment/muscle-group/exercise/template slug resolves) — already enforced by the seed validator.
+
+**§4 addendum — controlled-enumeration columns (T-10 decision, pending human A/B ratify)**
+The user-facing selections that reference the `muscle_group`/`equipment` enumerations are **not** the
+body-map itself (that is computed from the `exercise_muscle_group` FK join, above). The loose spots are
+`user_preferences.target_muscle_groups` / `avoid_muscle_groups` / `equipment_slugs` and
+`workout_feedback.skipped`. Two ways to make them **constrained** (tight referential integrity), both
+on the table already in §4:
+- **(A) FK fact/join tables** — `user_target_muscle(user_id FK→user, muscle_group_id FK→muscle_group,
+    is_primary)`; `user_avoid_muscle(...)`; `user_has_equipment(user_id, equipment_id FK→equipment)`;
+      `run_skipped_exercise(run_id FK→workout_run, exercise_id FK→exercise)`. Tightest; gives
+    ON DELETE semantics + clean analytical joins. Cost: prefs save is a multi-row tx; 4 small tables.
+- **(B) CHECK-constrained slug arrays** — keep the `TEXT[]` columns but add a subquery CHECK per
+    column, e.g. `CHECK (NOT EXISTS (SELECT 1 FROM UNNEST(target_muscle_groups) s WHERE NOT EXISTS
+    (SELECT 1 FROM muscle_group WHERE slug = s)))`. Referential integrity at the row, one row for prefs.
+    Cost: no cascade; must be DEFERRABLE.
+**Recommendation:** (A) for `skipped` + `avoid`/`target` muscle + `has-equipment` — the app wants one
+ source of truth with delete-time behavior. Catalog is a **small closed** set, so the rows stay cheap.
+Not yet applied to the migration — human picks A or B, then T-10 updates the DDL + shape/DDL tests.
 
 ## 5 · UI / playback + Music
 - **Class Display (`/play`, `/class?room=`, the TV surface):** big countdown, two progress bars
