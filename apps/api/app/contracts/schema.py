@@ -11,11 +11,12 @@ generators rename *fields*, not *values*. The per-language field manifest
 so this module is validated now by ``python3 -m py_compile`` (syntax) and is introspection
 checked by the Pydantic layer of the drift guard once the runtime lands (T-10).
 """
+
 from __future__ import annotations
 
 from enum import Enum
-from typing import Annotated, List, Optional, Union
-from pydantic import BaseModel, ConfigDict, Field
+from typing import Annotated, List, Literal, Optional, Union
+from pydantic import BaseModel, ConfigDict, Discriminator, Field
 from pydantic.alias_generators import to_camel
 
 
@@ -41,6 +42,7 @@ class Emphasis(str, Enum):
 class MusicProvider(str, Enum):
     USER = "user"
     SOUND = "soundcloud"
+
 
 class StartOn(str, Enum):
     RUN_START = "run_start"
@@ -76,7 +78,11 @@ class StructureTag(str, Enum):
 # Base: shared camelCase-alias config for every model.
 # --------------------------------------------------------------------------
 class Base(BaseModel):
-    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True)
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+        extra="forbid",
+    )
 
 
 # --------------------------------------------------------------------------
@@ -84,35 +90,37 @@ class Base(BaseModel):
 # --------------------------------------------------------------------------
 class _BeatBase(Base):
     id: str
-    duration_ms: int   # alias: durationMs
+    duration_ms: int  # alias: durationMs
 
 
 class PhaseIntroBeat(_BeatBase):
-    kind: str = "phase-intro"
+    kind: Literal["phase-intro"] = "phase-intro"
 
 
 class PrepBeat(_BeatBase):
-    kind: str = "prep"
+    kind: Literal["prep"] = "prep"
 
 
 class WorkBeat(_BeatBase):
-    kind: str = "work"
-    exercise_ref: str   # alias: exerciseRef (catalogue exercise slug)
+    kind: Literal["work"] = "work"
+    exercise_ref: str  # alias: exerciseRef (catalogue exercise slug)
     cue: Optional[str] = None
-    round: Optional[int] = None    # JSON key "round" (to_camel identity; shadows builtin int round, intentional)
+    round: Optional[int] = (
+        None  # JSON key "round" (to_camel identity; shadows builtin int round, intentional)
+    )
 
 
 class RestBeat(_BeatBase):
-    kind: str = "rest"
+    kind: Literal["rest"] = "rest"
 
 
 class CoolDownHoldBeat(_BeatBase):
-    kind: str = "cooldown-hold"
+    kind: Literal["cooldown-hold"] = "cooldown-hold"
 
 
 Beat = Annotated[
     Union[PhaseIntroBeat, PrepBeat, WorkBeat, RestBeat, CoolDownHoldBeat],
-    Field(discriminator="kind"),
+    Discriminator("kind"),
 ]
 
 
@@ -121,27 +129,25 @@ Beat = Annotated[
 # --------------------------------------------------------------------------
 class MusicRef(Base):
     provider: MusicProvider
-    playlist_ref: Optional[str
-] = None            # alias: playlistRef
+    playlist_ref: Optional[str] = None  # alias: playlistRef
     volume: Optional[float] = None
-    start_on: Optional[StartOn] = None    # alias: startOn
+    start_on: Optional[StartOn] = None  # alias: startOn
 
 
 class PlanSlotParams(Base):
-    work_scale: Optional[float] = None    # alias: workScale
-    rest_scale: Optional[float] = None    # alias: restScale
-    rounds_mult: Optional[float] = None    # alias: roundsMult
-    target_rpe_focus: Optional[int
-] = None         # alias: targetRpeFocus; 1..10 RPE
+    work_scale: Optional[float] = None  # alias: workScale
+    rest_scale: Optional[float] = None  # alias: restScale
+    rounds_mult: Optional[float] = None  # alias: roundsMult
+    target_rpe_focus: Optional[int] = None  # alias: targetRpeFocus; 1..10 RPE
 
 
 class PlanSlot(Base):
     slot: int
     kind: PlanSlotKind
-    label: Optional[str
-] = None
-    template_slug: Optional[str
-] = None         # alias: template_slug; null when kind == "rest" (design D6 CHECK)
+    label: Optional[str] = None
+    template_slug: Optional[str] = (
+        None  # alias: template_slug; null when kind == "rest" (design D6 CHECK)
+    )
     params: Optional[PlanSlotParams] = None
 
 
@@ -151,9 +157,8 @@ class PlanSlot(Base):
 class Equipment(Base):
     slug: str
     name: str
-    icon_name: Optional[str
-] = None        # alias: icon_name
-    is_builtin: Optional[bool] = True    # alias: is_builtin
+    icon_name: Optional[str] = None  # alias: icon_name
+    is_builtin: Optional[bool] = True  # alias: is_builtin
 
 
 class MuscleGroup(Base):
@@ -165,20 +170,13 @@ class MuscleGroup(Base):
 class Exercise(Base):
     slug: str
     name: str
-    description: Optional[str
-] = None
-    cues: List[str
-] = Field(default_factory=list)
-    difficulty: Optional[int
-] = None
-    intensity: Optional[int
-] = None
-    muscle_groups: Optional[List[str
-]] = None   # alias: muscle_groups
-    equipment: Optional[List[str
-]] = None
-    gif_url: Optional[str
-] = None        # alias: gif_url (F-01)
+    description: Optional[str] = None
+    cues: List[str] = Field(default_factory=list)
+    difficulty: Optional[int] = None
+    intensity: Optional[int] = None
+    muscle_groups: Optional[List[str]] = None  # alias: muscle_groups
+    equipment: Optional[List[str]] = None
+    gif_url: Optional[str] = None  # alias: gif_url (F-01)
 
 
 # --------------------------------------------------------------------------
@@ -186,51 +184,48 @@ class Exercise(Base):
 # --------------------------------------------------------------------------
 class PhaseExercise(Base):
     position: int
-    exercise: str    # catalogue exercise slug (PhaseExercise keys it `exercise`;
-       # the runtime Beat keys the same slug `exerciseRef` -- see snapshot key map)
-    work_seconds: int     # alias: workSeconds
-    cue: Optional[str
-] = None        # design alias: cue_override
+    exercise: str  # catalogue exercise slug (PhaseExercise keys it `exercise`;
+    # the runtime Beat keys the same slug `exerciseRef` -- see snapshot key map)
+    work_seconds: int  # alias: workSeconds
+    cue: Optional[str] = None  # design alias: cue_override
 
 
 class WorkoutPhase(Base):
     position: int
-    phase_type: PhaseType    # alias: phaseType
+    phase_type: PhaseType  # alias: phaseType
     title: str
-    description: Optional[str
-] = None
+    description: Optional[str] = None
     rounds: int = 1
-    rest_seconds: int = 0     # alias: restSeconds
-    prep_seconds: int = 10     # alias: prepSeconds
-    transition_seconds: int = 10     # alias: transitionSeconds
+    rest_seconds: int = 0  # alias: restSeconds
+    prep_seconds: int = 10  # alias: prepSeconds
+    transition_seconds: int = 10  # alias: transitionSeconds
     items: List[PhaseExercise] = Field(default_factory=list)
 
 
 class WorkoutTemplate(Base):
     slug: str
     name: str
-    description: Optional[str
-] = None
-    goal: Optional[str
-] = None
+    description: Optional[str] = None
+    goal: Optional[str] = None
     structure: StructureTag
-    structure_version: int = 1     # alias: structureVersion
-    total_seconds: int     # alias: totalSeconds
+    structure_version: int = 1  # alias: structureVersion
+    total_seconds: int  # alias: totalSeconds
     emphasis: Optional[Emphasis] = None
+    # Advisory domain metadata (consumed by picker/recommendations, not buildTimeline).
+    equipment_required: List[str] = Field(default_factory=list)
+    target_muscle_groups: List[str] = Field(default_factory=list)
     music: Optional[MusicRef] = None
-    source: Optional[str
-] = None
+    source: Optional[str] = None
     phases: List[WorkoutPhase] = Field(default_factory=list)
 
 
 class WorkoutRun(Base):
     # The AI-loop substrate (D1): a materialised, deterministic run.
     id: str
-    template: str    # template slug (content-as-data; API/DB form is `template_id`, T-10)
-    started_at_ms: int     # alias: startedAtMs
-    ended_at_ms: Optional[int
-] = None     # alias: endedAtMs
-    duration_ms: int     # alias: durationMs
+    template: str  # template slug (content-as-data; API/DB form is `template_id`, T-10)
+    started_at_ms: int  # alias: startedAtMs
+    ended_at_ms: Optional[int] = None  # alias: endedAtMs
+    duration_ms: int  # alias: durationMs
     status: RunStatus
     source: RunSource
     beats: List[Beat] = Field(default_factory=list)

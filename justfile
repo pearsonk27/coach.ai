@@ -60,3 +60,11 @@ check-all:
    just check-env
    just check-contract
    just check-invariants
+
+# --- codegen + seed (T-31 / T-11) -------------------------------------------
+generate:
+   cd apps/api && ./.venv/bin/python -c "import sys, json; sys.path.insert(0, '.'); from app.main import app; open('openapi.json', 'w').write(json.dumps(app.openapi(), indent=2))"
+   node scripts/gen-api-client.cjs
+
+seed-check:
+   cd apps/api && ./.venv/bin/python -m app.seed

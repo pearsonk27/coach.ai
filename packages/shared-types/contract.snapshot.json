@@ -79,7 +79,9 @@
         { "key": "structure", "kind": "enum", "enumId": "StructureTag", "optional": false },
         { "key": "structureVersion", "kind": "number", "optional": false },
         { "key": "totalSeconds", "kind": "number", "optional": false },
-        { "key": "emphasis", "kind": "enum", "enumId": "Emphasis", "optional": true },
+       { "key": "emphasis", "kind": "enum", "enumId": "Emphasis", "optional": true },
+        { "key": "equipmentRequired", "kind": "string[]", "optional": false, "default": [] },
+        { "key": "targetMuscleGroups", "kind": "string[]", "optional": false, "default": [] },
         { "key": "music", "kind": "MusicRef", "optional": true },
         { "key": "source", "kind": "string", "optional": true },
         { "key": "phases", "kind": "WorkoutPhase[]", "optional": false }

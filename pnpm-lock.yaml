@@ -127,8 +127,6 @@ importers:
 
   packages/api-client: {}
 
-  packages/prompts: {}
-
   packages/shared-types:
     devDependencies:
       typescript:
@@ -137,7 +135,11 @@ importers:
 
   packages/testing: {}
 
-  packages/ui: {}
+  packages/ui:
+    dependencies:
+      '@coach/shared-types':
+        specifier: workspace:*
+        version: link:../shared-types
 
 packages:
 

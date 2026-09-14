@@ -92,7 +92,12 @@ export const WorkoutTemplateSchema = z
       structure: StructureTagEnum,
       structureVersion: z.number().int().default(1), // snake: structure_version
       totalSeconds: z.number().int().nonnegative(), // snake: total_seconds
-      emphasis: EmphasisEnum.optional(),
+     emphasis: EmphasisEnum.optional(),
+      // Advisory domain metadata: the equipment a room/plan needs + the muscle groups the
+      // template loads (consumed by picker/recommendations — NOT by buildTimeline). snake:
+      // equipment_required / target_muscle_groups.
+     equipmentRequired: z.array(z.string()).default([]),
+     targetMuscleGroups: z.array(z.string()).default([]),
       music: MusicRefSchema.optional(),
       source: z.string().optional(),
       phases: z.array(WorkoutPhaseSchema),

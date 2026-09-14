@@ -269,7 +269,8 @@ function guardedRuntimes() {
     if (zod) ok("zod resolved — TS introspection (z.schema -> snapshot) active");
     else log("SKIP: zod not yet installed — TS introspection layer pending (STOP-D addendum, T-31)");
 
-    const py = which("python3") || which("python");
+    const py = process.env.CT_PYTHON || (fs.existsSync("apps/api/.venv/bin/python") ? "apps/api/.venv/bin/python" : (which("python3") || which("python")));
+    // Prefer the API venv interpreter (where pydantic + sqlalchemy are installed); fall back to system.
     if (py) {
       const r = spawnSync(py, ["-m", "py_compile", PY_SCHEMA], {cwd: ROOT, stdio: "pipe"});
       if (r.status === 0) ok(`${py} -m py_compile schema.py — Pydantic mirror is syntactically valid`);

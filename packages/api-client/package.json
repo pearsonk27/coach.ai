@@ -1,14 +1,17 @@
 {
    "name": "@coach/api-client",
-   "version": "0.0.0",
+   "version": "0.1.0",
    "private": true,
-   "description": "Generated REST client from the API's OpenAPI (T-31).",
+   "description": "Generated REST client from the API's OpenAPI (T-31). Regenerate: node scripts/gen-api-client.cjs.",
+   "main": "src/index.ts",
+   "types": "src/index.ts",
    "scripts": {
-     "format": "node -e 0",
-     "lint": "node -e 0",
-     "typecheck": "node -e 0",
-     "test": "node -e 0",
-     "build": "node -e 0",
-     "dev": "node -e 0"
-   }
+        "gen": "node ../../scripts/gen-api-client.cjs",
+        "format": "node -e 0",
+        "lint": "node -e 0",
+        "typecheck": "cd ../../ && npx tsc -p packages/api-client/tsconfig.json --noEmit",
+        "test": "node -e 0",
+        "build": "cd ../../ && npx tsc -p packages/api-client/tsconfig.json",
+        "dev": "node -e 0"
+     }
 }

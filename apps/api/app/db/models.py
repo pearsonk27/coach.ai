@@ -152,6 +152,8 @@ class WorkoutTemplate(Base):
     total_seconds = Column(Integer, nullable=False)
     structure_version = Column(Integer, nullable=False, server_default=text("1"))
     music = Column(JSONB, nullable=True)
+    equipment_required = Column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    target_muscle_groups = Column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
     enabled = Column(Boolean, nullable=False, server_default=text("true"))
     created_by = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=text("now()"))

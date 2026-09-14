@@ -112,6 +112,18 @@ def upgrade() -> None:
         sa.Column("total_seconds", sa.Integer(), nullable=False),
         sa.Column("structure_version", sa.Integer(), nullable=False, server_default=sa.text("1")),
         sa.Column("music", postgresql.JSONB(astext_type=sa.Text()), nullable=True),
+        sa.Column(
+            "equipment_required",
+            postgresql.JSONB(astext_type=sa.Text()),
+            nullable=False,
+            server_default=sa.text("'[]'::jsonb"),
+        ),
+        sa.Column(
+            "target_muscle_groups",
+            postgresql.JSONB(astext_type=sa.Text()),
+            nullable=False,
+            server_default=sa.text("'[]'::jsonb"),
+        ),
         sa.Column("enabled", sa.Boolean(), nullable=False, server_default=sa.text("true")),
         sa.Column("created_by", sa.String(), nullable=True),
         sa.Column(

@@ -99,4 +99,15 @@ if (drifts.length || sens.length) {
 // eslint-disable-next-line no-console
 console.log("[PASS] T3 contract drift: 3-way agreement holds; sensitivity proven.");
 
+// T-11/contract-extension: the template's advisory domain metadata (equipment + muscle groups)
+// is declared on ALL three sides and must survive the 3-way comparison above.
+const tmplKeys = canonicalKeyView(snapshot as any).types.WorkoutTemplate.keys;
+for (const field of ["equipmentRequired", "targetMuscleGroups"]) {
+   if (!tmplKeys.includes(field)) {
+      throw new Error(`contract: WorkoutTemplate.${field} missing from snapshot`);
+   }
+}
+// eslint-disable-next-line no-console
+console.log("[PASS] T3 contract drift: template carries equipmentRequired/targetMuscleGroups.");
+
 export {threeWayAgree, sensitivityHolds, sig, enumSig};

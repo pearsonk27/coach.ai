@@ -162,19 +162,21 @@
    ]
   },
   "WorkoutTemplate": {
-   "keys": [
-    "slug",
-    "name",
-    "description",
-    "goal",
-    "structure",
-    "structureVersion",
-    "totalSeconds",
-    "emphasis",
-    "music",
-    "source",
-    "phases"
-   ],
+    "keys": [
+     "slug",
+     "name",
+     "description",
+     "goal",
+     "structure",
+     "structureVersion",
+     "totalSeconds",
+     "emphasis",
+     "equipmentRequired",
+     "targetMuscleGroups",
+     "music",
+     "source",
+     "phases"
+    ],
    "pyNames": [
     "slug",
     "name",
@@ -182,12 +184,14 @@
     "goal",
     "structure",
     "structure_version",
-    "total_seconds",
-    "emphasis",
-    "music",
-    "source",
-    "phases"
-   ]
+     "total_seconds",
+     "emphasis",
+     "equipment_required",
+     "target_muscle_groups",
+     "music",
+     "source",
+     "phases"
+     ]
   },
   "MusicRef": {
    "keys": [

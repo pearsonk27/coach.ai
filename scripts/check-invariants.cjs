@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 // Invariant checks over the seed catalog (AGENTS.md I1/I2/I4).
 //
-// T-00 ships I4 (fixed-hiit phase-order) as a real, runnable check + JSON
-// well-formedness. I1 (beats built by buildTimeline) and I2 (rebuilt total ==
-// stored total) require the pure `buildTimeline` engine from T-20, so they are
-// TODO here — the placeholders pass until T-20 fills them in.
-//
-// I4 / I7: `fixed-hiit` structure is a TAG, not a DB limit. The 5-phase order
-// invariant applies ONLY to templates whose `structure === "fixed-hiit"`.
+// T-00 shipped I4 (fixed-hiit phase-order) + JSON well-formedness. T-20 adds I1/I2 via the pure
+// `buildTimeline` engine (Node half: ./build-timeline.cjs; Python half: apps/api/app/engine).
+//   I1 — `workout_run.beats` is BUILT by buildTimeline, never hand-authored: we assert the engine
+//        yields a non-empty beat array for every seed workout.
+//   I2 — `buildTimeline(...).totalSeconds == workout_template.total_seconds` for un-scaled templates.
+//   I4/I7 — `fixed-hiit` structure is a TAG, not a DB limit: the 5-phase order invariant applies
+//        ONLY to templates whose `structure === "fixed-hiit"`.
+
 const fs = require("node:fs");
 const path = require("node:path");
 
@@ -21,7 +22,7 @@ const FIXED_HIIT_PHASES = [
 ];
 
 const fail = (m) => {
-   console.error("I4 FAIL: " + m);
+   console.error("FAIL: " + m);
    process.exitCode = 1;
 };
 
@@ -53,7 +54,13 @@ for (const rel of jsonFiles) {
    readJson(f);
 }
 
-// 2. I4 — fixed-hiit templates carry exactly the 5 phases, in order.
+// 2. The pure engine + a slug-indexed catalog (fills default cues, never changes geometry).
+const { buildTimeline, totalSecondsOf } = require("./build-timeline.cjs");
+const catalogRaw = readJson(path.join(seedDir, "catalog.json"));
+const catalogBySlug = {};
+for (const ex of (catalogRaw && catalogRaw.exercises) || []) catalogBySlug[ex.slug] = ex;
+
+// 3. Per-template checks.
 const checked = fs
    .readdirSync(path.join(seedDir, "workouts"))
    .filter((n) => n.endsWith(".json"))
@@ -68,17 +75,29 @@ for (const t of checked) {
          phases.every((p, i) => p === FIXED_HIIT_PHASES[i]);
       if (ok) {
          console.log(`I4 OK: ${t.slug} (${FIXED_HIIT_PHASES.join(" → ")})`);
-      } else {
+       } else {
          fail(`${t.slug} is fixed-hiit but phases are [${phases.join(", ")}]`);
-      }
-   } else {
+       }
+    } else {
       console.log(`I4 SKIP: ${t.slug} is ${t.structure} (tag-exempt, I7)`);
-   }
-}
+    }
+
+   // ---- T-20: I1 (beats are built, non-empty) + I2 (rebuilt total == stored) ----
+    const beats = buildTimeline(t, undefined, catalogBySlug);
+    const rebuilt = totalSecondsOf(t);
+    const stored = t.total_seconds;
+    if (beats.length > 0 && rebuilt === stored) {
+       console.log(`I1/I2 OK: ${t.slug} rebuilt=${rebuilt}s == stored=${stored}s (beats=${beats.length})`);
+    } else {
+       if (beats.length === 0) fail(`${t.slug}: I1 buildTimeline produced zero beats`);
+       fail(`${t.slug}: I2 rebuilt total ${rebuilt}s != stored ${stored}s`);
+    }
+ }
 
 if (process.exitCode === 1) {
    process.exit(1);
 }
 console.log(
-   "Invariants: I4 pass over seed/** · I1/I2 TODO (await T-20 buildTimeline) · well-formed seed JSON."
+   "Invariants: I1/I2 pass over seed/** (buildTimeline rebuilt == stored total) · " +
+      "I4 fixed-hiit phase-order · well-formed seed JSON.",
 );

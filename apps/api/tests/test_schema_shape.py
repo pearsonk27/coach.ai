@@ -43,6 +43,8 @@ EXPECTED_COLUMNS: dict[str, list[str]] = {
         "total_seconds",
         "structure_version",
         "music",
+        "equipment_required",
+        "target_muscle_groups",
         "enabled",
         "created_by",
         "created_at",
