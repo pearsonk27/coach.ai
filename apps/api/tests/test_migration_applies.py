@@ -11,7 +11,7 @@ import os
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.dialects import postgresql
 
 CORE_TABLES = {
@@ -50,6 +50,28 @@ def _cfg(url: str) -> Config:
     return config
 
 
+def _reset_schema(url: str) -> None:
+    """Make the round-trip idempotent regardless of prior pollution.
+
+    The schema can arrive with physical tables that carry NO alembic_version (e.g. a prior
+    ``Base.metadata.create_all`` / ``load_seed`` on this db). Alembic then reads 'base' and tries
+    to (re)CREATE TABLE -> ``relation "..." already exists``. Wipe the ORM tables + the
+    alembic_version row so ``upgrade head`` always starts from a clean base.
+
+    Expects a THROWAWAY db (``PG_TEST_DSN`` / a CI scratch db / a provisioned ``just db-up``
+    container) -- never shared or production state.
+    """
+    engine = create_engine(url)
+    try:
+        with engine.begin() as conn:
+            conn.execute(text("DROP SCHEMA public CASCADE"))
+            conn.execute(text("CREATE SCHEMA public"))
+            # PG15+ no longer auto-grants the fresh public schema; restore it for the connecting role.
+            conn.execute(text("GRANT ALL ON SCHEMA public TO CURRENT_USER"))
+    finally:
+        engine.dispose()
+
+
 def _tables(url: str) -> set[str]:
     engine = create_engine(url)
     names = set(inspect(engine).get_table_names())
@@ -62,6 +84,7 @@ def test_postgres_dialect_compiles() -> None:
 
 
 def test_upgrade_creates_all_core_tables_then_downgrades(live_url: str) -> None:
+    _reset_schema(live_url)   # start from a clean base, even if a seed left un-versioned tables
     cfg = _cfg(live_url)
     command.upgrade(cfg, "head")
     tables = _tables(live_url)
