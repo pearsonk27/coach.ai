@@ -73,18 +73,28 @@ runs locally.
  builds succeeded). `packages/api-client/gen` regenerates the client from OpenAPI.
 
 ## Blockers / pending → next developer
-1. **PG18 + psycopg not running** (decision, not a bug): the design targets PostgreSQL-18 + psycopg,
-   but no cluster runs locally. Resolved for MVP: the DB-free `check_seed` carries the CI gate;
-   `load_seed` / `test_pg_smoke` degrade to `pytest.skip` when no PG is reachable (a `PG_TEST_DSN`
-   is honoured if a reviewer provides one). psycopg is now installed in `apps/api/.venv`; a future
-   cycle stands up PG-18 (or uses a PGlite / testcontainers shim) to exercise the real upsert path.
+1. ~~**PG18 + psycopg not running**~~ → **RESOLVED / VERIFIED** (decision kept; now exercised): the design
+   targets PostgreSQL-18 + psycopg. **PostgreSQL 18.6.0 is provisioned** (`coach-pg18` via
+   `PG_PORT=5433 just db-up`, native PG-14 on `:5432` untouched) and `just pg-tests` =
+   **43/43, 0 skips** — psycopg 3 sync URL `postgresql+psycopg://` (+ `+asyncpg`→sync), the Alembic
+   `0001` upgrade→head/downgrade→base round-trip, idempotent `upsert` (`ON CONFLICT DO UPDATE`),
+   `create_all`→live rows, 4 seeded templates, `user_preferences` round-trip. DB-free `pytest` still
+   SKIPS the 3 PG-only tests when no `PG_TEST_DSN` (a `PG_TEST_DSN` is honoured when supplied), so the
+   committed pipeline stays green without a PG. The up/down migration test is pollution-idempotent
+   (`DROP SCHEMA public CASCADE` first; `655b828`) — it no longer crashes on a db left with
+   un-versioned tables by `create_all`/`db-seed`. psycopg is installed in `apps/api/.venv`.
 2. **zod not installed** in node_modules → the contract guard's TS introspection layer is the SKIP
    branch. The snapshot agreement (TS↔snapshot, Py↔snapshot) still passes; once zod is installed the
    guarded TS introspection activates automatically.
-3. **Deps-pending UI** (T-40 components, T-41 stores, T-42 run flow UI, T-43 feedback UI, T-60 mobile,
-  T-70 web) — these need `react`/`react-native`/`zustand`/`expo-av`/`next`. Their PURE cores
-  (T-21 clock, T-31 client, T-50 plan resolution) are done + green; the React/Expo layers are
-   scaffolding stubs (`node -e 0`) awaiting deps-install. Wire them once dependencies land.
+3. **Deps-pending UI — PARTIALLY RESOLVED** (T-40 components, T-41 stores, T-42 run-flow UI, T-43
+   feedback UI, T-60 mobile, T-70 web). The **web** deps are now **installed + locked** (committed):
+   `next ^16.3.5`, `react ^19.3.0`, `react-dom ^19.3.0`, `zustand ^5.0.15` in `apps/web`
+   (+ `@types/react(-dom)` dev), gate-clean (7/7). Their PURE cores (T-21 clock, T-31 client, T-50 plan
+   resolution) are done + green; the web/React layers are `node -e 0` scaffolding awaiting T-40
+   implementation. **STILL pending** for the mobile/React layers: `react-native`, `react-navigation`,
+   `@types/react-native`, `expo-*`/`expo-av`/`expo-haptics`/`expo-sensors`/`expo-constants`, and
+   `zod`+`pydantic` (STOP-D addenda — the TS/pydantic introspection arms of `check-contract` SKIP by
+   design, not fail). T-40 stays `blocked` until the mobile + zod/pydantic deps land.
 
 ## How to run
 - Python: `apps/api/.venv/bin/python -m pytest` (40 passed / 3 skipped). Seed check:
