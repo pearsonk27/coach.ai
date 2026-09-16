@@ -162,13 +162,28 @@ def check_seed(root: Optional[Path] = None) -> SeedReport:
 
 
 def _upsert(session, obj):
-    existing = session.get(type(obj), obj.id)
+    cls = type(obj)
+    table = cls.__table__
+    if "id" not in {c.name for c in table.primary_key.columns}:
+        # Composite-PK join rows (exercise_muscle_group / exercise_equipment) carry no `id`
+        # scalar, so we cannot session.get by id. Look up by the full primary key and, absent,
+        # insert. These are idempotent because seed_all deletes them first.
+        pk = [c.name for c in table.primary_key.columns]
+        filters = [getattr(cls, name) == getattr(obj, name) for name in pk]
+        if session.query(cls).filter(*filters).first() is not None:
+            return
+        session.add(obj)
+        session.flush()
+        return
+    existing = session.get(cls, obj.id)
     if existing is not None:
-        for c in type(obj).__table__.columns:
-            if c.name == "id":
+        # Copy only columns explicitly set on the constructed row; leave server-default / audit
+        # columns (created_at / updated_at / is_archived ...) to the DB so an idempotent re-seed
+        # never clobbers them to NULL.
+        for c in table.columns:
+            if c.name == "id" or c.name not in obj.__dict__:
                 continue
-            if hasattr(obj, c.name):
-                setattr(existing, c.name, getattr(obj, c.name))
+            setattr(existing, c.name, obj.__dict__[c.name])
         session.add(existing)
         return existing
     session.add(obj)
@@ -342,7 +357,7 @@ def seed_all(session, root: Optional[Path] = None, *, enforce_invariants: bool =
 def load_seed(
     db_url: str, *, enforce_invariants: bool = True, seed_root: Optional[Path] = None
 ) -> dict:
-    from sqlalchemy import create_engine, func
+    from sqlalchemy import create_engine, func, select
     from sqlalchemy.orm import sessionmaker
 
     global SEED_DIR, SEED_ROOT
@@ -358,12 +373,14 @@ def load_seed(
     session = sessionmaker(bind=engine)()
     seed_all(session, root, enforce_invariants=enforce_invariants)
     session.commit()
+    # func.count() over the full relation reads the true committed count (a bare Query
+    # .with_entities(count()).scalar() is unreliable under SQLAlchemy 2.0).
     summary = {
-        "templates": session.query(models.WorkoutTemplate).with_entities(func.count()).scalar(),
-        "plans": session.query(models.WorkoutPlan).with_entities(func.count()).scalar(),
-        "exercises": session.query(models.Exercise).with_entities(func.count()).scalar(),
-        "phase_exercises": session.query(models.PhaseExercise).with_entities(func.count()).scalar(),
-        "workouts": session.query(models.WorkoutTemplate).with_entities(func.count()).scalar(),
+        "templates": session.scalar(select(func.count()).select_from(models.WorkoutTemplate)),
+        "plans": session.scalar(select(func.count()).select_from(models.WorkoutPlan)),
+        "exercises": session.scalar(select(func.count()).select_from(models.Exercise)),
+        "phase_exercises": session.scalar(select(func.count()).select_from(models.PhaseExercise)),
+        "workouts": session.scalar(select(func.count()).select_from(models.WorkoutRun)),
     }
     session.close()
     engine.dispose()

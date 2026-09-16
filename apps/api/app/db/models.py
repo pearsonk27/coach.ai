@@ -36,9 +36,10 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import declarative_base
 
-Base = declarative_base()
+# Single source of truth: the models register on the shared Base (app.db.base) so alembic
+# (env.py), seed.py, and the PG smoke test all materialise the exact same metadata.
+from app.db.base import Base
 
 # The 15 core tables T-10 owns (re-exported for the DB-free shape / DDL tests).
 EXPECTED_TABLES = [

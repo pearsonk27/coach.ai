@@ -61,6 +61,32 @@ check-all:
    just check-contract
    just check-invariants
 
+# --- Postgres-18 via Docker (T-10/T-11 persistence unblock) ------------------
+# Provisions a throwaway PostgreSQL-18 container so the DB-bound paths the design targets
+# on PG-18 (uuidv7 PKs, JSONB) un-`skip`: the Alembic upgrade->base round-trip
+# (tests/test_migration_applies.py) and the seed_all idempotency smoke (test_pg_smoke.py).
+# The API itself is DB-free (in-memory store, T-30); these recipes just light up persistence.
+#
+# If a native Postgres already owns 5432 (e.g. Homebrew `brew services`), shadow the mapping
+# by overriding the port, e.g. `PG_PORT=5433 just db-up` (all recipes read PG_* overrides).
+# scripts/pg.sh prints the resolved DSN on `up`. Default DSN: postgresql+psycopg://coach:coach@localhost:5432/coach
+
+db-up:
+   bash scripts/pg.sh up
+
+db-down:
+   bash scripts/pg.sh down
+
+db-status:
+   bash scripts/pg.sh status
+
+db-seed:
+   bash scripts/pg.sh seed
+
+# Run the API suite with the DSNs exported so the PG smoke + migration tests run for real.
+pg-tests:
+   bash scripts/pg.sh tests
+
 # --- codegen + seed (T-31 / T-11) -------------------------------------------
 generate:
    cd apps/api && ./.venv/bin/python -c "import sys, json; sys.path.insert(0, '.'); from app.main import app; open('openapi.json', 'w').write(json.dumps(app.openapi(), indent=2))"

@@ -6,19 +6,19 @@ one is reachable, else the test degrades to a clean ``pytest.skip`` (local / CI 
 service). Point it at one with ``PG_TEST_DSN`` (or ``TEST_DATABASE_URL``, non-sqlite), e.g.
 ``postgresql://postgres:postgres@localhost:5432/coach_test``.
 
-When it runs, it builds ``Base.metadata`` in an isolation schema, seeds, re-seeds (idempotency),
-and re-verifies I2 after the DB round-trip.
+``coach_test`` is a dedicated disposable database that ``pg.sh`` creates just for tests, so the
+fixture isolates on its *public* schema -- drop_all -> create_all -> seed -> verify -> drop_all.
+This sidesteps per-connection ``search_path`` pinning, which is fragile across pooled drivers.
 """
 
 from __future__ import annotations
 
-import json
 import os
 import sys
 from pathlib import Path
 
 import pytest
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import sessionmaker
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # app/
@@ -29,8 +29,6 @@ from app.db import models  # noqa: E402
 from app.db.base import Base  # noqa: E402
 from app.engine.build_timeline import total_seconds_of  # noqa: E402
 from app.seed import check_seed, load_workouts, seed_all  # noqa: E402
-
-_SCHEMA = "coach_smoke"
 
 
 def _dsn() -> str | None:
@@ -47,23 +45,16 @@ def pg_session():
     dsn = _dsn()
     if dsn is None:
         pytest.skip("no PG_TEST_DSN/TEST_DATABASE_URL -- persistence path not exercised this run")
+    # Build a clean public schema, all 15 tables, and a seeded session bound to it.
     engine = create_engine(dsn)
-    session = None
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+    session = sessionmaker(bind=engine)()
     try:
-        with engine.begin() as conn:
-            conn.execute(f"DROP SCHEMA IF EXISTS {_SCHEMA} CASCADE")
-            conn.execute(f"CREATE SCHEMA {_SCHEMA}")
-        for c in Base.metadata.sorted_tables:
-            with engine.begin() as conn:
-                conn.run_sync(lambda s, t=c: t.create(s, checkfirst=True))
-        session = sessionmaker(bind=engine)()
-        session.execute(f"SET search_path TO {_SCHEMA}")
         yield session
-    except Exception as e:  # noqa: BLE001 -- a dead PG is a skip, not a failure
-        raise pytest.skip(f"PG not reachable at {dsn!r} -- {e}")
     finally:
-        if session is not None:
-            session.close()
+        session.close()
+        Base.metadata.drop_all(engine)
         engine.dispose()
 
 
@@ -73,19 +64,20 @@ def test_seed_all_is_idempotent(pg_session) -> None:
 
     seed_all(pg_session, REPO_ROOT, enforce_invariants=True)
     pg_session.commit()
-    n1 = pg_session.query(models.WorkoutTemplate).with_entities(func.count()).scalar()
+    n1 = pg_session.scalar(select(func.count()).select_from(models.WorkoutTemplate))
     assert n1 == len(check.template_slugs), n1
 
     # Re-seed: idempotent by slug -- no duplicates.
     seed_all(pg_session, REPO_ROOT, enforce_invariants=True)
     pg_session.commit()
-    n2 = pg_session.query(models.WorkoutTemplate).with_entities(func.count()).scalar()
+    n2 = pg_session.scalar(select(func.count()).select_from(models.WorkoutTemplate))
     assert n2 == n1, f"idempotency broken: {n1} -> {n2}"
 
 
 def test_i2_survives_persistence(pg_session) -> None:
     # I2 survives the DB round-trip: stored total_seconds == rebuilt total.
     check = check_seed(REPO_ROOT)
+    assert check.ok
     for tmpl in load_workouts(REPO_ROOT):
         rebuilt = total_seconds_of(tmpl)
         row = pg_session.query(models.WorkoutTemplate).filter_by(slug=tmpl["slug"]).one()

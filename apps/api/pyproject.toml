@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "httpx", "pyrefly", "ruff"]
+dev = ["pytest", "httpx", "pyrefly", "ruff", "psycopg[binary]"]
 
 [tool.pyrefly]
 strict = true
