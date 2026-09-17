@@ -21,6 +21,7 @@ class Store:
         self.feedback: Dict[str, Dict[str, Any]] = {}
         self.streaks: Dict[str, Dict[str, Any]] = {}
         self.preferences: Dict[str, Dict[str, Any]] = {}
+        self.playlist: Dict[str, Dict[str, Any]] = {}
 
     def new_id(self) -> str:
         return str(uuid.uuid4())
@@ -80,6 +81,37 @@ class Store:
 
     def get_streak(self, aid: str) -> Optional[Dict[str, Any]]:
         return self.streaks.get(aid)
+
+    # ---- music playlist (T-42/T-43; per-account oEmbed config, in-memory for the MVP) ----
+    def default_playlist(self, account_id: str) -> Dict[str, Any]:
+        # Default music config: a SoundCloud source, full volume, no loop, unmuted. No secret
+        # token in the MVP (public oEmbed only); the web MusicPlayer ducks this on T-42 cues.
+        return {
+             "accountId": account_id,
+             "provider": "soundcloud",
+             "url": None,
+             "loop": False,
+             "volume": 1.0,
+             "muted": False,
+             "startOn": "start",
+             }
+
+    def get_playlist(self, account_id: str) -> Dict[str, Any]:
+        return dict(self.playlist.get(account_id, self.default_playlist(account_id)))
+
+    def set_playlist(self, account_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        cur = self.get_playlist(account_id)
+        for key in ("provider", "url", "start_on", "startOn", "loop", "volume", "muted"):
+            if key in data and data[key] is not None:
+                cur[key] = data[key]
+        self.playlist[account_id] = cur
+        return dict(cur)
+
+    def clear_playlist(self, account_id: str) -> Dict[str, Any]:
+        base = self.default_playlist(account_id)
+        base["provider"] = "soundcloud"
+        self.playlist[account_id] = base
+        return dict(base)
 
 
 STORE = Store()

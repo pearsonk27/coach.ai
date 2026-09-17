@@ -51,14 +51,29 @@ export type StructureTag = z.infer<typeof StructureTagEnum>;
 
 // D7: a provider-abstracted, server-resolved music resource. MVP provider "user".
 export const MusicRefSchema = z
-   .object({
+    .object({
       provider: MusicProviderEnum, // required
       playlistRef: z.string().optional(), // snake: playlist_ref
       volume: z.number().min(0).max(1).optional(),
       startOn: StartOnEnum.optional(), // snake: start_on
-   })
-   .strict();
+    })
+    .strict();
 export type MusicRef = z.infer<typeof MusicRefSchema>;
+
+// D7/D8 (T-43): the server-resolved embed for GET /music/resolve. `provider` is the
+// resource's kind ("soundcloud" for oEmbed); `embedUrl` is the public oEmbed URL the
+// client mounts (no secret in MVP). `volume`/`startOn`/`loop`/`muted` are playback knobs.
+export const MusicResolveResponseSchema = z
+    .object({
+      provider: MusicProviderEnum, // required
+      embedUrl: z.string().optional(), // null/absent => silence
+      volume: z.number().min(0).max(1).optional(),
+      startOn: StartOnEnum.optional(), // snake: start_on
+      loop: z.boolean().optional(),
+      muted: z.boolean().optional(),
+    })
+    .strict();
+export type MusicResolveResponse = z.infer<typeof MusicResolveResponseSchema>;
 
 // D6: per-slot periodization knobs; all optional (defaults live in buildTimeline, T-20).
 export const PlanSlotParamsSchema = z

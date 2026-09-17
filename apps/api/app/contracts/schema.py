@@ -134,6 +134,17 @@ class MusicRef(Base):
     start_on: Optional[StartOn] = None  # alias: startOn
 
 
+# D7/D8 (T-43): the server-resolved embed for GET /music/resolve. No secret in MVP
+# (oEmbed of a public URL); `embed_url` null/absent means the client plays silence.
+class MusicResolveResponse(Base):
+    provider: MusicProvider
+    embed_url: Optional[str] = None     # alias: embedUrl (public oEmbed URL, or None=silence)
+    volume: Optional[float] = None
+    start_on: Optional[StartOn] = None  # alias: startOn
+    loop: Optional[bool] = None
+    muted: Optional[bool] = None
+
+
 class PlanSlotParams(Base):
     work_scale: Optional[float] = None  # alias: workScale
     rest_scale: Optional[float] = None  # alias: restScale

@@ -112,3 +112,18 @@ runs locally.
 - Beat shape: `{ id, kind, startMs, endMs, durationMs }` base; `work` adds
   `{ exerciseRef, cue?, round? }`. `rest`/`prep`/`phase-intro`/`cooldown-hold` are strict.
 - Deterministic seed UUIDs: `uuid5(NAMESPACE_URL, "coach.ai/seed", prefix:slug)` — idempotent re-seed.
+
+## Web + mobile MVP built (this cycle) — GREEN
+`just gates` 7/7, `just check-all` PASS, Python 45 passed / 3 skipped. Built the web + mobile UI MVP on
+top of the already-green backend core.
+- **T-40 / T-41 / T-42 / T-43 / T-51 / T-60 done; T-70 partial.** `apps/web` (Next 16) renders
+ `/play`, `/class`, `/instructor`, `/me`, `/today`, `/cast` + a nav hub. Pure scheduling/ducking/
+ today math lives in `@coach/ui` (Node-tested); the React layers compose it. `apps/mobile` is a
+  typecheck-only shell reusing the same core (no RN runtime, lean).
+- **New API endpoints:** `POST /api/runs/{rid}/control` (T-41), `GET /api/music/resolve` +
+   `GET/PATCH/DELETE /api/music` (T-43/T-33 playlist on `store.py`), `GET /api/plans/{slug}/session?date=`
+   (T-51).
+- **Contract:** `MusicResolveResponse` added to all 6 artifacts; `contract-drift` stays 5/5.
+- **Defer/documented:** real SoundCloud oEmbed+OAuth (F-08), true Chromecast (`cast_sender.js`, T-60),
+   the RN `App.tsx` (T-70). Web path added only `@coach/web: @types/node` (dev, Next toolchain) — no
+    new third-party runtime deps. See `tasks/INDEX.md` → "What's next".

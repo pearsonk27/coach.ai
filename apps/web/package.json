@@ -1,24 +1,27 @@
 {
-   "name": "@coach/web",
-   "version": "0.0.0",
-   "private": true,
-   "description": "Next.js web app: /play, /class Class Display, /instructor remote, /me playlist. Lands in T-40.",
-   "scripts": {
-      "format": "node -e 0",
-      "lint": "node -e 0",
-      "typecheck": "node -e 0",
-      "test": "node -e 0",
-      "build": "node -e 0",
-      "dev": "node -e 0"
-   },
-   "dependencies": {
-      "next": "^16.3.5",
-      "react": "^19.3.0",
-      "react-dom": "^19.3.0",
-      "zustand": "^5.0.15"
-   },
+  "name": "@coach/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js web app: /play, /class Class Display, /instructor remote, /me playlist, /today. Lands in T-40/T-41/T-42/T-43/T-51/T-60.",
+  "scripts": {
+    "format": "node -e 0",
+    "lint": "node -e 0",
+    "typecheck": "cd ../../ && npx tsc --noEmit -p apps/web/tsconfig.json",
+    "test": "node test/run-all.cjs",
+    "build": "next build",
+    "dev": "next dev"
+  },
+  "dependencies": {
+    "@coach/api-client": "workspace:*",
+    "@coach/ui": "workspace:*",
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zustand": "^5.0.15"
+  },
    "devDependencies": {
-      "@types/react": "^19.3.0",
-      "@types/react-dom": "^19.3.0"
+     "@types/node": "^22.20.3",
+     "@types/react": "^19.3.0",
+     "@types/react-dom": "^19.3.0"
    }
 }

@@ -1,9 +1,15 @@
-"""T-30 -- content API: browse workouts, exercise catalog, plans; materialise a run."""
+"""T-30 -- content API: browse workouts, exercise catalog, plans; materialise a run.
 
+T-51 adds `GET /plans/{slug}/session?date=` -- "today's session" for a flat 3+1 plan, resolved by
+calendar date. The rotation matches the client `packages/ui/session-today.ts` (Monday=0..Sunday=6,
+`slotIndex = dayOfWeek mod slotCount`), so web and API agree on which slot plays when.
+"""
+
+import datetime as _dt
 from pathlib import Path
 
 import json
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.api import runs as runs_mod
 from app.engine.build_timeline import build_timeline
@@ -86,3 +92,29 @@ def get_plan_slots(slug: str) -> list[dict]:
         if plan.get("slug") == slug:
             return runs_mod.list_plan_slots_for(plan, root=_root())
     raise HTTPException(status_code=404, detail=f"unknown plan '{slug}'")
+
+
+@router.get("/plans/{slug}/session")
+def get_plan_session(slug: str, date: str | None = Query(None)) -> dict:
+     # T-51: which slot of a flat 3+1 plan plays on `date` (default today). Mirrors the client's
+     # session-today.ts: dayOfWeek (Mon=0..Sun=6) -> slotIndex = dayOfWeek mod len(slots).
+    plan = next((p for p in load_plans(_root()) if p.get("slug") == slug), None)
+    if plan is None:
+        raise HTTPException(status_code=404, detail=f"unknown plan '{slug}'")
+    slots = runs_mod.list_plan_slots_for(plan, root=_root())
+    d = _dt.date.fromisoformat(date or "") if date else _dt.date.today()
+    # isoweekday(): Mon=1..Sun=7 -> map to Mon=0..Sun=6 to match the client resolver.
+    dow = d.isoweekday() - 1
+    if slots:
+        idx = ((dow % len(slots)) + len(slots)) % len(slots)
+        slot = slots[idx]
+        is_rest = slot.get("kind") == "rest" or slot.get("template_slug") is None
+        return {
+              "date": d.isoformat(),
+              "dayOfWeek": dow,
+              "slotIndex": idx,
+              "slot": slot,
+              "isRest": is_rest,
+              }
+     # No slots -> default to a rest day, matching the client's unresolvable => isRest=true.
+    return {"date": d.isoformat(), "dayOfWeek": dow, "slotIndex": -1, "slot": None, "isRest": True}

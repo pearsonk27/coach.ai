@@ -3,6 +3,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.api import runs as runs_mod
+import app.api._util as _util
 from app.api.store import STORE
 
 router = APIRouter(prefix="/api", tags=["account", "session", "feedback"])
@@ -83,6 +84,37 @@ def get_run(rid: str) -> dict:
     run = STORE.get_run(rid)
     if run is None:
         raise HTTPException(status_code=404, detail=f"unknown run '{rid}'")
+    return {"run": run}
+
+
+@router.post("/runs/{rid}/control")
+def control_run(rid: str, payload: dict) -> dict:
+    # T-41 instructor remote: apply a control command to the in-memory run's control state and
+    # return the new state. Commands map to the keyboard remote in the web /instructor view.
+    run = STORE.get_run(rid)
+    if run is None:
+        raise HTTPException(status_code=404, detail=f"unknown run '{rid}'")
+    command = payload.get("command") or payload.get("cmd")
+    allowed = {"pause", "resume", "end", "jump-phase", "nudge"}
+    if command not in allowed:
+        raise HTTPException(status_code=422, detail=f"unknown command '{command}'")
+     # Lazy-init the control state on first command.
+    ctrl = run.get("control") or {"phase": -1, "offsetMs": 0, "state": "playing", "ended": False}
+    delta = int(payload.get("delta", 0))
+    if command == "pause":
+        ctrl["state"] = "paused"
+    elif command == "resume":
+        ctrl["state"] = "playing"
+    elif command == "end":
+        ctrl["state"] = "ended"
+        ctrl["ended"] = True
+    elif command == "jump-phase":
+        target = int(payload.get("phase", ctrl.get("phase", -1) + 1))
+        ctrl["phase"] = target
+    elif command == "nudge":
+        ctrl["offsetMs"] = ctrl.get("offsetMs", 0) + delta
+    run["control"] = ctrl
+    run["updated_at"] = _util.now_iso()
     return {"run": run}
 
 

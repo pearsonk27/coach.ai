@@ -9,7 +9,7 @@
         "format": "node -e 0",
         "lint": "node -e 0",
         "typecheck": "cd ../../ && npx tsc -p packages/ui/tsconfig.json --noEmit",
-        "test": "node test/clock.test.cjs",
+"test": "node test/run-all.cjs",
         "build": "cd ../../ && npx tsc -p packages/ui/tsconfig.json",
         "dev": "node -e 0"
       },

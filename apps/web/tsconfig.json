@@ -1,0 +1,21 @@
+{
+   "extends": "../../tsconfig.base.json",
+   "compilerOptions": {
+      "target": "ES2022",
+      "lib": ["dom", "dom.iterable", "esnext"],
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "jsx": "preserve",
+      "noEmit": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowJs": true,
+      "types": ["react", "react-dom"],
+      "paths": {
+        "@coach/ui": ["../../packages/ui/src/index.ts"],
+        "@coach/api-client": ["../../packages/api-client/src/index.ts"]
+      }
+   },
+   "include": ["next-env.d.ts", "types/**/*.d.ts", "app/**/*.ts", "app/**/*.tsx", "lib/**/*.ts", "components/**/*.tsx"]
+}

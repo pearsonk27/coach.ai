@@ -88,6 +88,66 @@ def test_plan_slots_flatten_3plus1() -> None:
     r = client.get("/api/content/plans")
     assert r.status_code == 200
     slots = r.json()
-    # fullbody-periodized: upper / lower / fullbody active + stretch
+     # fullbody-periodized: upper / lower / fullbody active + stretch
     kinds = [s["kind"] for s in slots]
     assert "active" in kinds
+
+
+def test_plan_session_today_resolves_slot() -> None:
+      # T-51: date -> resolved slot, mirroring the client session-today.ts rotation.
+    r = client.get("/api/content/plans/fullbody-periodized/session", params={"date": "2024-01-01"})
+    assert r.status_code == 200
+    body = r.json()
+      # 2024-01-01 is a Monday (dow=0) -> slot index 0 of the flattened plan
+    assert body["dayOfWeek"] == 0
+    assert body["slotIndex"] == 0
+    assert body["date"] == "2024-01-01"
+    assert body["slot"]["slot_index"] == 1        # seed slots are 1-based; flattened[0] = slot 1
+    assert body["slot"]["template_slug"] == "hiit-upper-30"
+
+
+def test_plan_session_default_date_and_unknown() -> None:
+    # No date -> today's resolution (200 with a computed dow)
+    r = client.get("/api/content/plans/fullbody-periodized/session")
+    assert r.status_code == 200
+    assert isinstance(r.json()["dayOfWeek"], int)
+    # Unknown plan -> 404
+    assert client.get("/api/content/plans/nada/session").status_code == 404
+
+
+def test_music_resolve_echoes_public_url() -> None:
+      # T-43: hermetic oEmbed resolve -- no embed when no url; echo when a url is set.
+    silent = client.get("/api/music/resolve", params={"accountId": "muser"}).json()
+    assert silent["embedUrl"] is None       # default playlist has no url -> silence
+    assert silent["provider"] == "soundcloud"
+    assert silent["muted"] is False
+
+    client.patch("/api/music", json={"accountId": "muser", "url": "https://sc.example/playlists/1"})
+    resolved = client.get("/api/music/resolve", params={"accountId": "muser"}).json()
+    assert resolved["embedUrl"] == "https://sc.example/playlists/1"
+
+
+def test_playlist_cud() -> None:
+    # PATCH upsert -> GET reflects it -> DELETE clears back to the default
+    patched = client.patch("/api/music", json={"accountId": "pu", "loop": True, "volume": 0.7}).json()
+    assert patched["loop"] is True and patched["volume"] == 0.7
+    got = client.get("/api/music", params={"accountId": "pu"}).json()
+    assert got["loop"] is True and got["volume"] == 0.7
+    cleared = client.delete("/api/music", params={"accountId": "pu"}).json()
+    assert cleared["loop"] is False and cleared["url"] is None
+
+
+def test_run_control_commands() -> None:
+       # T-41 instructor remote: pause/resume/end/jump-phase/nudge mutate the run's control state.
+    run = client.post("/api/runs", json={"template": "hiit-upper-30"}).json()
+    rid = run["run"]["id"]
+    assert client.post(f"/api/runs/{rid}/control", json={"command": "pause"}).json()["run"]["control"]["state"] == "paused"
+    assert client.post(f"/api/runs/{rid}/control", json={"command": "resume"}).json()["run"]["control"]["state"] == "playing"
+    client.post(f"/api/runs/{rid}/control", json={"command": "nudge", "delta": 30000})
+    client.post(f"/api/runs/{rid}/control", json={"command": "nudge", "delta": -30000})
+       # jump-phase is monotonic-ish; nudge offsets cancel to 0
+    assert client.post(f"/api/runs/{rid}/control", json={"command": "jump-phase", "phase": 2}).json()["run"]["control"]["phase"] == 2
+       # a bad command is rejected
+    assert client.post(f"/api/runs/{rid}/control", json={"command": "fly"}).status_code == 422
+       # unknown run is 404
+    assert client.post("/api/runs/nope/control", json={"command": "pause"}).status_code == 404

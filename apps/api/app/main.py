@@ -7,7 +7,7 @@ seed check (I1/I2/I4) so the app never serves inconsistent content.
 
 from fastapi import APIRouter, FastAPI
 
-from app.api import content, accounts
+from app.api import content, accounts, music
 from app.seed import check_seed
 
 router = APIRouter(prefix="/api", tags=["health"])
@@ -31,6 +31,7 @@ def create_app() -> FastAPI:
     app.include_router(router)
     app.include_router(content.router)
     app.include_router(accounts.router)
+    app.include_router(music.router)
     return app
 
 

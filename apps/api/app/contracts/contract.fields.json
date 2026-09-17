@@ -193,20 +193,38 @@
      "phases"
      ]
   },
-  "MusicRef": {
-   "keys": [
-    "provider",
-    "playlistRef",
-    "volume",
-    "startOn"
-   ],
-   "pyNames": [
-    "provider",
-    "playlist_ref",
-    "volume",
-    "start_on"
-   ]
-  },
+   "MusicRef": {
+    "keys": [
+     "provider",
+     "playlistRef",
+     "volume",
+     "startOn"
+    ],
+    "pyNames": [
+     "provider",
+     "playlist_ref",
+     "volume",
+     "start_on"
+    ]
+   },
+   "MusicResolveResponse": {
+    "keys": [
+     "provider",
+     "embedUrl",
+     "volume",
+     "startOn",
+     "loop",
+     "muted"
+    ],
+    "pyNames": [
+     "provider",
+     "embed_url",
+     "volume",
+     "start_on",
+     "loop",
+     "muted"
+    ]
+   },
   "PlanSlot": {
    "keys": [
     "slot",

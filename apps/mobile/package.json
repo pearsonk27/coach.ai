@@ -2,13 +2,16 @@
    "name": "@coach/mobile",
    "version": "0.0.0",
    "private": true,
-   "description": "Expo + React Native HIIT player (T-70).",
+   "description": "Expo + React Native HIIT player (T-70). MVP = typecheck-only shell reusing @coach/ui's shared core; the full RN runtime (App.tsx, hooks, navigation) is a next step.",
    "scripts": {
-     "format": "node -e 0",
-     "lint": "node -e 0",
-     "typecheck": "node -e 0",
-     "test": "node -e 0",
-     "build": "node -e 0",
-     "dev": "node -e 0"
+      "format": "node -e 0",
+      "lint": "node -e 0",
+      "typecheck": "cd ../../ && npx tsc -p apps/mobile/tsconfig.json --noEmit",
+      "test": "node -e 0",
+      "build": "node -e 0",
+      "dev": "node -e 0"
+   },
+   "dependencies": {
+      "@coach/ui": "workspace:*"
    }
 }

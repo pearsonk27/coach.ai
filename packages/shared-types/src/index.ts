@@ -23,7 +23,6 @@ export type {
    WorkoutPhase,
    PhaseExercise,
    WorkoutTemplate,
-   MusicRef,
    PlanSlot,
    PlanSlotParams,
 } from "./timeline.z";
@@ -31,4 +30,6 @@ export type {
     Exercise,
     Equipment,
     MuscleGroup,
+    MusicRef,
+    MusicResolveResponse,
  } from "./catalog.z";

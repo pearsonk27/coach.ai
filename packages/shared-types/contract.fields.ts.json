@@ -28,6 +28,7 @@
     "PhaseExercise": { "keys": ["position", "exercise", "workSeconds", "cue"] },
    "WorkoutTemplate": { "keys": ["slug", "name", "description", "goal", "structure", "structureVersion", "totalSeconds", "emphasis", "equipmentRequired", "targetMuscleGroups", "music", "source", "phases"] },
     "MusicRef": { "keys": ["provider", "playlistRef", "volume", "startOn"] },
+    "MusicResolveResponse": { "keys": ["provider", "embedUrl", "volume", "startOn", "loop", "muted"] },
     "PlanSlot": { "keys": ["slot", "kind", "label", "templateSlug", "params"] },
     "PlanSlotParams": { "keys": ["workScale", "restScale", "roundsMult", "targetRpeFocus"] },
     "Equipment": { "keys": ["slug", "name", "iconName", "isBuiltin"] },
