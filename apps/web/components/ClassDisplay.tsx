@@ -99,12 +99,11 @@ export function ClassDisplay() {
 
            {/* The in-class soundtrack: the user's playlist runs underneath the countdown so the class
                is never silent. Fed from the store's `music` (seeded to the user's playlist by default). */}
-           <WorkoutMusic
-              music={music}
-              controlState={control.state}
-              ducked={shownCue ? true : false}
-              activeCue={shownCue}
-              onStart={async () => {
+ <WorkoutMusic
+  music={music}
+  controlState={control.state}
+  activeCue={shownCue}
+  onStart={async () => {
                 await audio.ensureStarted();
                 if (control.ended || control.state === "paused") store.applyControl("resume");
                 }

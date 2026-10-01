@@ -53,13 +53,20 @@ Columns: **status** (`backlog|ready|active|completed|blocked`) · **deps** · **
 - **T-41** **done** — `/instructor` remote: keyboard (Space/→/±30s/Esc) + on-screen buttons apply
    control to the store and POST `POST /api/runs/{rid}/control` (new endpoint on `accounts.py`).
 - **T-42** **done** — music-ducking + cue system. **Pure** scheduling/ducking math is in
-   `@coach/ui` (`audio-cues.ts`: `planCues/duckWindows/duckLevelAt/cuesInWindow/rampEnvelope`) with a
-   Node test suite; the React `useAudioGraph` (Web Audio: cue tones on `cuesGain`, music ducked to
-   ~30% on the countdown, muteable) composes it. No music ⇒ no `AudioContext` ⇒ silent no-op, never
-   crashes the play loop.
-- **T-43** **done (MVP stub)** — `MusicPlayer` + `GET /api/music/resolve` (hermetic oEmbed echo) +
-   playlist CRUD `GET/PATCH/DELETE /api/music` on `store.py`. **Caveat:** real SoundCloud oEmbed +
-   OAuth are deferred (F-08); the MVP uses a demo embed + the gain-ducking path, not a live track.
+    `@coach/ui` (`audio-cues.ts`: `planCues/duckWindows/duckLevelAt/cuesInWindow/rampEnvelope`) with a
+   Node test suite; the React `useAudioGraph` (Web Audio: cue tones on `cuesGain`, muteable) composes
+    it and feeds the store's `musicGain()` to a **duck bus** (`lib/musicDuck.ts`: quantised pub/sub +
+   `duckVolumePercent`/`duckRampSchedule`, Node-tested). `WorkoutMusic` binds the real SoundCloud
+   player via `SC.Widget.setVolume` so the **actual playlist ducks to ~30%** on each 5-count and
+   restores smoothly. The old 150 Hz "backing" oscillator (a faint always-on hum/buzz + a stand-in
+   that was never the real audio) is gone; cue tones now have a short attack so the metronome reads
+   clean. No music ⇒ no `AudioContext` ⇒ silent no-op, never crashes the play loop.
+- **T-43** **done** — `MusicPlayer` + `GET /api/music/resolve` (hermetic oEmbed echo) +
+   playlist CRUD `GET/PATCH/DELETE /api/music` on `store.py`, plus `WorkoutMusic` on the Class Display.
+    In-class ducking is **real** now: the store's `musicGain()` rides the in-class `SC.Widget` volume
+    (so the user's own playlist dips on each cue), not a stand-in. **Remaining:** real SoundCloud OAuth
+    + token-based playback are still deferred (F-08); autoplay needs a one-tap gesture per browser
+    policy. Real embed + client-side resolve land when the API is down.
 - **T-51** **done** — `/today` view + `GET /api/plans/{slug}/session?date=` (pure `todaySession`
    resolver in `@coach/ui`, Node-tested). Rotates the flat 3+1 plan by ISO day-of-week.
 - **T-60** **done (MVP stub)** — `/cast` tab-mirror: a self-documenting cast surface that opens the
