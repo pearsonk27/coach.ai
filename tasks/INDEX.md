@@ -78,11 +78,29 @@ direct `fetch`).
 T-01b · T-11 · T-20 · T-21 · T-30 · T-31 · T-33 · T-50 · T-99. See **`HANDOFF.md`**.
 
 ## What's next (MVP complete · headless closeout)
-The MVP web/mobile surfaces are built (`just gates` 7/7, `just check-all` PASS, Python 45/3-skipped).
+The MVP web/mobile surfaces are built (`just gates` 7/7, `just check-all` PASS, Python 46/3-skipped).
+
+### This session — closed three user-visible MVP gaps (gates 7/7, Python 46/3-skipped)
+- **Real 30-min class, not the 4-min demo:** wired the missing T-40/T-51 bridge. `/today` and a new
+   home `RunPicker` now `POST /api/runs` → load the **real seed beats** (`hiit-*‑30`, `stretch-reset-15`)
+   into the shared store and jump to the Class Display. The demo run stays only as a zero-network
+  fallback, flagged with a **DEMO** badge + "Start a workout" on the display. New: `lib/useStartWorkout.ts`,
+    `components/RunPicker.tsx`.
+- **SoundCloud playlist now plays:** embed resolution is **client-side** (`web/lib/music.ts`, mirrored by
+    `api/app/api/music.py`) — a pasted SoundCloud **set/track/user** URL → `w.soundcloud.com/player/?show_artwork=true&
+   visual=true&url=…` with no token (D8). `/me` resolves + plays it **with zero backend** (the old path needed the
+  Python API on :8000, which `just dev` never starts — the real reason it looked broken). The server `GET
+  /api/music/resolve` still persists + resolves the same embed when the API is up. Non-SoundCloud URLs
+   still echo (back-compat, test-guarded).
+- **Base theme (was unstyled):** `globals.css` is now a full high-contrast dark theme covering every
+     component (ring + progress + up-next + cue banners + forms), incl. reduced-motion + responsive.
+     Remaining: wire cue-gain to the live SoundCloud iframe (F-08; the gain-duck graph is proven on a
+      backing tone) + true Chromecast (`cast_sender.js`, T-60) + RN screens (T-70).
 Remaining work is polish + the deferred real-integration stubs, all post-MVP:
-- **Defer (documented):** real SoundCloud oEmbed + OAuth (F-08) in place of the T-43 demo embed; true
-    Chromecast device control via `cast_sender.js` in place of the T-60 tab-mirror; the RN `App.tsx`
-   screens for T-70 (the shared-core reuse is in place and typechecks).
+- **Defer (documented):** real SoundCloud **OAuth auto-pull** (F-08) — the MVP *paste-a-public-URL* path
+    is live (`/api/music/resolve` → `w.soundcloud.com/player`); the missing piece is wiring the live
+   iframe to the cue-gain duck. True Chromecast device control via `cast_sender.js` in place of the
+  T-60 tab-mirror; the RN `App.tsx` screens for T-70 (the shared-core reuse is in place and typechecks).
 - **Polish / F-line:** F-01 (per-exercise GIF overlay), F-02 (body-map), F-03 (preferences surface),
     F-04 (AI generate/improve + MCP), F-05 (multi-device class sync), F-06 (Fit/Fitbit connectors),
      F-07 (workout evaluation). These need human gates (A/C/D/E/I) or are deliberately deferred, per

@@ -6,6 +6,7 @@ seed check (I1/I2/I4) so the app never serves inconsistent content.
 """
 
 from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import content, accounts, music
 from app.seed import check_seed
@@ -27,6 +28,21 @@ def health() -> dict:
 def create_app() -> FastAPI:
     app = FastAPI(
         title="coach.ai API", version="0.1.0", docs_url="/api/docs", openapi_url="/api/openapi.json"
+    )
+    # The web app (apps/web, e.g. http://localhost:3000) is a different origin from this API (8000),
+    # so the browser blocks its fetches (GET /content, POST /runs) unless CORS answers. The MVP surface
+    # is auth-free public content + an in-memory store, so we allow the dev web origins. (allow_*_origin
+    # is "*" because the API carries no credentials; the future light-account path narrows this.)
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://100.85.211.98:3000",
+        ],
+        allow_credentials=False,
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["content-type", "authorization"],
     )
     app.include_router(router)
     app.include_router(content.router)

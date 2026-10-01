@@ -40,6 +40,16 @@ build:
 dev:
    bash scripts/run-turbo.sh dev
 
+
+# Run a REAL class end-to-end: start the API (content + beats + music resolve) AND the web
+# together, so http://localhost:3000 can materialise a seed workout (POST /api/runs) and play it
+# with the in-class soundtrack. `dev:web` alone leaves the app on the zero-network demo fallback
+# (its API calls 404), which is why a class couldn't start before. Ctrl-C stops both.
+dev-all:
+   @echo "--> API on http://localhost:8000  (workout content + beats + music resolve)"
+   @echo "--> Web on http://localhost:3000  (open / , start 'HIIT Upper · ~30 min')"
+   @bash -c 'cd apps/api && .venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 & API=$$!; trap "kill $$API 2>/dev/null" EXIT; cd apps/web && exec npx next dev -p 3000'
+
 install:
    pnpm install
 

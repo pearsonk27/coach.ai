@@ -2,6 +2,19 @@
 
 _Last updated: 2026-07-15 · owner: agent (proceeding with recommendations, no human gates per directive)._
 
+## This session — three user-visible MVP gaps closed (gates 7/7 · Python 46/3-skipped)
+The handoff showed only the ~4-min hardcoded `demoBeats()` run, a dead music path, and an
+unstyled UI. All three are now real:
+- **Real workout → player:** `lib/useStartWorkout.ts` + `components/RunPicker.tsx` bridge T-40/T-51 —
+   start a **seed workout** (`hiit-lower-30`/`hiit-upper-30`/`stretch-reset-15`, 1605s/200s) from `/today`
+  or the home picker; it loads real beats into zustand and opens the Class Display. Demo stays a
+   zero-network fallback, now flagged **DEMO** on `/class` + `/play`.
+- **Music plays:** `api/app/api/music.py` `resolve_music`/`build_embed_url` → real
+   `w.soundcloud.com/player/?url=…` for a pasted SoundCloud set/track/user (no token, D8); `/me` saves +
+   re-resolves live. (Verified: user's `kris-pearson-2/sets/coach-we-hip-hop` → a playable embed.)
+- **Theme:** `apps/web/app/globals.css` — full high-contrast dark theme for every component.
+   Python +1 test (`test_music_resolve_builds_soundcloud_set_embed`).
+
 ## What is DONE and green this cycle
 `just gates` (format/lint/typecheck/test/build, 7/7) and the full Python suite (40 passed / 3
 skipped) both pass. Skips are the PG persistence smoke, which degrades cleanly — no PG18 cluster

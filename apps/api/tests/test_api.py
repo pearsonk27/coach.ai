@@ -127,6 +127,27 @@ def test_music_resolve_echoes_public_url() -> None:
     assert resolved["embedUrl"] == "https://sc.example/playlists/1"
 
 
+def test_music_resolve_builds_soundcloud_set_embed() -> None:
+       # T-43: a public SoundCloud SET/track/playlist URL -> a real w.soundcloud.com embed the
+       # client can play (no token / no secret, D8). This is the user-paste path.
+    set_url = "https://soundcloud.com/kris-pearson-2/sets/coach-we-hip-hop?si=zzz&utm_source=clipboard"
+    client.patch("/api/music", json={"accountId": "scuser", "provider": "soundcloud", "url": set_url})
+    resolved = client.get("/api/music/resolve", params={"accountId": "scuser"}).json()
+    assert resolved["provider"] == "soundcloud"
+    assert resolved["source"] == set_url
+    assert resolved["embedUrl"].startswith("https://w.soundcloud.com/player/")
+        # player renders with SoundCloud's own params; tracking ?si=/?utm_ is stripped off resource
+    assert "show_artwork=true" in resolved["embedUrl"]
+    assert "visual=true" in resolved["embedUrl"]
+    assert "coach-we-hip-hop" in resolved["embedUrl"]
+    assert "kris-pearson-2" in resolved["embedUrl"]
+    assert "si=zzz" not in resolved["embedUrl"]
+    assert "utm_source" not in resolved["embedUrl"]
+    tail = resolved["embedUrl"].split("url=", 1)[1]      # percent-encoded source URL
+    assert "///" not in tail      # nested :// is escaped, not raw
+    assert "kris-pearson-2" in tail
+   
+   
 def test_playlist_cud() -> None:
     # PATCH upsert -> GET reflects it -> DELETE clears back to the default
     patched = client.patch("/api/music", json={"accountId": "pu", "loop": True, "volume": 0.7}).json()

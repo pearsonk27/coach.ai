@@ -36,6 +36,21 @@ export function demoRunId(): string {
    return "demo-" + demoBeats().length;
 }
 
+// The wire Beat contract is durationMs-only (beatBase = { id, durationMs } + .strict()), so the API
+// can't carry startMs/endMs -- but the clock + the up-next filter need cumulative offsets. This stamps
+// them from the single source of truth (durationMs; beats are contiguous), idempotently, so a real API
+// run and the demo share one clock. Applied at the store boundary so no un-stamped beat ever reaches
+// readClock -- without it an API run yields NaN:NaN and an empty up-next.
+export function stampTimeline(beats: readonly Beat[]): Beat[] {
+   let t = 0;
+   return beats.map((b) => {
+      const startMs = t;
+      const endMs = t + b.durationMs;
+      t = endMs;
+      return { ...b, startMs, endMs };
+        });
+}
+
 // ---- fetch layer (runtime only; guarded so SSR/prerender never hits the network) ----
 async function jget<T>(path: string, query?: Record<string, string | number | undefined>): Promise<T> {
    const res = await fetch(apiUrl(path, query));
@@ -54,7 +69,23 @@ async function jsend<T>(path: string, body: unknown, method = "POST"): Promise<T
 }
 
 export function fetchRunBeats(slug: string): Promise<Beat[]> {
-   return jget<Beat[]>(`/api/content/workouts/${slug}/beats`);
+    return jget<Beat[]>(`/api/content/workouts/${slug}/beats`);
+}
+
+// A browsable workout summary (GET /api/content/workouts).
+export interface WorkoutSummary {
+   slug: string;
+   name: string;
+   goal?: string;
+   emphasis?: string;
+   structure?: string;
+   total_seconds: number;
+   equipment_required?: string[];
+   target_muscle_groups?: string[];
+   beats: number;
+}
+export function fetchWorkouts(): Promise<WorkoutSummary[]> {
+   return jget<WorkoutSummary[]>(`/api/content/workouts`);
 }
 
 export interface TodayResult {
@@ -70,10 +101,18 @@ export function fetchToday(planSlug = "fullbody-periodized", date?: string): Pro
 
 // T-43: music resolve (hermetic oEmbed echo on the server side; embedUrl null => silence).
 export function resolveMusic(accountId = "default", url: string | null = null) {
-   return jget<{ provider: string; embedUrl: string | null; volume: number; startOn: string; loop: boolean; muted: boolean }>(
-      "/api/music/resolve",
-      { accountId, url: url ?? undefined },
-   );
+    return jget<{
+     provider: string;
+     source: string | null;
+     embedUrl: string | null;
+     volume: number;
+     startOn: string;
+     loop: boolean;
+     muted: boolean;
+   }>(`/api/music/resolve`, {
+     accountId,
+     url: url ?? undefined,
+   });
 }
 
 export function saveMusic(pl: Record<string, unknown>, accountId = "default") {

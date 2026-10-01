@@ -5,7 +5,8 @@
 import { create } from "zustand";
 import type { Beat, Cue } from "@coach/ui";
 import { planCues, duckLevelAt, DUCK_LEVEL } from "@coach/ui";
-import { demoBeats, demoRunId } from "./run";
+import { demoBeats, demoRunId, stampTimeline } from "./run";
+import { defaultPlaylistEmbed } from "./music";
 import type { ControlState, MusicPlayback } from "./types";
 
 export type ControlCommand = "pause" | "resume" | "end" | "jump-phase" | "nudge";
@@ -33,9 +34,11 @@ export default interface WebStoreState {
    clearError(): void;
 }
 
+// Seed the default soundtrack with the user's own playlist so a started class has music from the
+// first tap (the /play view renders it). /me or a server resolve can override this per account.
 const defaultMusic: MusicPlayback = {
    provider: "soundcloud",
-   embedUrl: null,
+   embedUrl: defaultPlaylistEmbed() || null,
    volume: 1.0,
    startOn: "start",
    loop: true,
@@ -57,25 +60,26 @@ function demoState(beats: Beat[]) {
    };
 }
 
-const demo = demoState(demoBeats());
+const demo = demoState(stampTimeline(demoBeats()));
 
 export const useWebStore = create<WebStoreState>((set, get) => ({
-     ...demo,
-     loadDemo() {
-      set(demoState(demoBeats()));
-     },
-     setRun(beats, rid, slug) {
-      set({
-        beats,
-        runId: rid,
-        templateSlug: slug,
-        cues: planCues(beats),
-        totalMs: beats.length ? beats[beats.length - 1].endMs : 0,
-        elapsedMs: 0,
-        control: { phase: -1, offsetMs: 0, state: "playing", ended: false },
-        error: null,
-        });
-      },
+       ...demo,
+       loadDemo() {
+          set(demoState(stampTimeline(demoBeats())));
+          },
+          setRun(beats, rid, slug) {
+          const stamped = stampTimeline(beats);
+          set({
+           beats: stamped,
+          runId: rid,
+          templateSlug: slug,
+          cues: planCues(stamped),
+          totalMs: stamped.length ? stamped[stamped.length - 1].endMs : 0,
+          elapsedMs: 0,
+          control: { phase: -1, offsetMs: 0, state: "playing", ended: false },
+          error: null,
+            });
+           },
      setElapsed(ms) {
       const s = get();
       const clamped = Math.max(0, Math.min(ms, s.totalMs || ms));
