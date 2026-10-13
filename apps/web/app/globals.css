@@ -410,6 +410,16 @@ main {
    color: var(--text-mut);
    font-size: 0.8rem;
 }
+.phase-display {
+   align-self: start;
+   font-size: 0.9rem;
+   font-weight: 600;
+   color: var(--text);
+   padding: 0.25rem 0.6rem;
+   border-radius: 999px;
+   background: var(--surface-2);
+   border: 1px solid var(--line-soft);
+}
 
 .demo-banner {
    display: flex;

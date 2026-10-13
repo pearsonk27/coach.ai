@@ -2,7 +2,7 @@
 // components/ClassDisplay.tsx -- T-40 Class Display: the runtime view. Big countdown ring, the current
 // beat, an up-next strip, and a live cue banner -- driven by the live clock. It also binds T-41
 // (instructor control state in the store) and T-42 (cues + ducking via useAudioGraph).
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { readClock, formatMSS, cuesInWindow, type Beat, type Cue, type WorkBeat } from "@coach/ui";
 import { useWebStore } from "../lib/store";
@@ -25,6 +25,15 @@ export function ClassDisplay() {
    const audio = useAudioGraph(true);
    const store = useWebStore();
    const { beats, cues, elapsedMs, control, music, muted } = store;
+
+  // Auto-start audio cues when class starts (control.state becomes "playing")
+  const prevStateRef = useRef(control.state);
+  useEffect(() => {
+    if (prevStateRef.current !== "playing" && control.state === "playing") {
+      audio.ensureStarted();
+    }
+    prevStateRef.current = control.state;
+  }, [control.state, audio]);
 
     // The default store renders a hardcoded ~4-min demo run (zero-network fallback). Flag it so the
     // user knows it's not a real 30-min class and is one tap away from starting one.
@@ -49,6 +58,7 @@ export function ClassDisplay() {
           <header className="class-header">
             <div className="title">{isDemo ? <><span className="chip warn">DEMO</span> demo session</> : (store.templateSlug ?? "demo session")}</div>
             <div className="state-pill">{control.state}</div>
+            <div className="phase-display">{KIND_LABEL[beat.kind] ?? beat.kind} - round {clock.index > 0 ? Math.ceil(clock.index / 2) : 1}</div>
             <div className="audio-note">
              {music.embedUrl ? "music: live" : "music: silent (no cue feed)"} · audio:{audio.cueFor(dueCue(cues, elapsedMs)).label}
               </div>
