@@ -69,6 +69,19 @@ def _work_seconds(item: Mapping) -> int:
     return int(item.get("workSeconds", 0))
 
 
+def _item_rest_seconds(item: Mapping) -> int:
+    """Inter-exercise rest for a single item (the break between THIS set and the next one).
+
+    0 == continuous (no rest, e.g. a flowing warm-up or a sustained hold). The D6 ``rest_scale``
+    knob applies to it, exactly as it does to the inter-round ``rest_seconds``. This is the NEW
+    per-item rest that lets a single-pass phase (rounds=1) give the user a rest between every
+    exercise -- the whole point of the rest-between-exercises feature.
+    """
+    if "rest_seconds" in item:
+        return int(item["rest_seconds"])
+    return int(item.get("restSeconds", 0))
+
+
 def _cue_for(item: Mapping, catalog: Optional[Mapping]) -> Optional[str]:
     """A beat's spoken cue: the per-item override wins, else the catalogue's first cue."""
     override = item.get("cue_override") or item.get("cue")
@@ -92,7 +105,8 @@ def _beats_for_phase(
     Emitted per phase (order):
     1. a single ``phase-intro`` hold for the prep/get-set ``prep_seconds`` (skipped when 0).
     2. for each round (1..rounds), each item in position order becomes a ``work`` beat, then a
-       ``rest`` between the last round (``(rounds-1) * rest_seconds`` inter-round rest).
+       per-item ``rest`` (inter-exercise, from the item's ``rest_seconds``) and -- when the phase
+       actually loops -- the inter-round rest between the last round (``(rounds-1) * rest_seconds``).
     3. one inter-phase ``rest`` equal to ``transition_seconds`` (the wind-into-the-next phase; a
        trailing tail for the final phase -- the run's natural end / music wind-down).
 
@@ -106,14 +120,14 @@ def _beats_for_phase(
     rounds = _scale_rounds(int(phase.get("rounds", 1)), params.rounds_mult)
 
     # (1) prep / get-set position.
-    prep_ms = _scale_floor(prep_seconds, 1.0) * _MS    # prep is not scaled by D6 knobs
+    prep_ms = _scale_floor(prep_seconds, 1.0) * _MS  # prep is not scaled by D6 knobs
     if prep_ms:
         beats.append({"id": f"p{pos}-intro", "kind": "phase-intro", "durationMs": prep_ms})
 
     items = sorted(phase.get("items", []), key=lambda it: int(it["position"]))
     rest_ms = _scale_floor(rest_seconds, params.rest_scale) * _MS
 
-    # (2) rounds x items -> work beats, with inter-round rest.
+    # (2) rounds x items -> work beats, each followed by its inter-exercise rest.
     for r in range(1, rounds + 1):
         for item in items:
             work_ms = _scale_floor(_work_seconds(item), params.work_scale) * _MS
@@ -128,6 +142,18 @@ def _beats_for_phase(
             if cue:
                 beat["cue"] = cue
             beats.append(beat)
+            # inter-exercise rest: the break between THIS set and the next one in the phase.
+            # A single-pass phase is just a sequence of work->rest pairs; a multi-round phase
+            # additionally lays the inter-round rest back-to-back below.
+            item_rest_ms = _scale_floor(_item_rest_seconds(item), params.rest_scale) * _MS
+            if item_rest_ms:
+                beats.append(
+                    {
+                        "id": f"p{pos}-r{r}-e{int(item['position'])}-rest",
+                        "kind": "rest",
+                        "durationMs": item_rest_ms,
+                    }
+                )
         if r < rounds and rest_ms:
             beats.append({"id": f"p{pos}-r{r}-rest", "kind": "rest", "durationMs": rest_ms})
 
@@ -144,15 +170,18 @@ def _phase_total(phase: Mapping, params: Params) -> int:
 
     Composed EXACTLY as the beater emits it (:func:`_beats_for_phase`), so
     ``sum(beats.durationMs)/1000 == total_seconds_of`` follows by construction:
-    ``prep + rounds*work + (rounds-1)*rest + transition``.
+    ``prep + rounds*(Σwork + Σ inter-exercise rest) + (rounds-1)*inter-round rest + transition``.
     """
     prep = int(phase.get("prep_seconds", phase.get("prepSeconds", 10)))
     rest = int(phase.get("rest_seconds", phase.get("restSeconds", 0)))
     transition = int(phase.get("transition_seconds", phase.get("transitionSeconds", 10)))
     rounds = _scale_rounds(int(phase.get("rounds", 1)), params.rounds_mult)
-    work = sum(_work_seconds(it) for it in phase.get("items", []))
+    items = phase.get("items", [])
+    work = sum(_work_seconds(it) for it in items)
+    inter_exercise_rest = sum(_item_rest_seconds(it) for it in items)
     total = prep
     total += rounds * _scale_floor(work, params.work_scale)
+    total += rounds * _scale_floor(inter_exercise_rest, params.rest_scale)
     total += (rounds - 1) * _scale_floor(rest, params.rest_scale)
     total += transition
     return total

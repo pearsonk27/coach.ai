@@ -92,6 +92,24 @@ for (const t of checked) {
        if (beats.length === 0) fail(`${t.slug}: I1 buildTimeline produced zero beats`);
        fail(`${t.slug}: I2 rebuilt total ${rebuilt}s != stored ${stored}s`);
     }
+
+   // ---- I5: each exercise appears at most once per workout (single-pass flow). ----
+   //      A repeated exercise inside one template is a design smell (e.g. glute-bridge in
+   //      warmup AND main AND accessory). The seed flows are single-pass; this guards against
+   //      re-introducing a duplicate. Counts slugs across every phase's items.
+   const seen = new Map();
+   for (const ph of t.phases || []) {
+      for (const it of ph.items || []) {
+         const slug = it.exercise;
+         seen.set(slug, (seen.get(slug) || 0) + 1);
+      }
+   }
+   const dups = [...seen.entries()].filter(([, n]) => n > 1);
+   if (dups.length === 0) {
+      console.log(`I5 OK: ${t.slug} ${seen.size} distinct exercises, no repeats`);
+   } else {
+      fail(`${t.slug}: I5 repeated exercise(s): ${dups.map(([s, n]) => `${s}×${n}`).join(", ")}`);
+   }
  }
 
 if (process.exitCode === 1) {

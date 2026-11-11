@@ -305,6 +305,7 @@ def seed_all(session, root: Optional[Path] = None, *, enforce_invariants: bool =
                         position=it_idx,
                         exercise_id=ex_ids[it["exercise"]],
                         work_seconds=it.get("work_seconds", it.get("workSeconds", 0)),
+                        rest_seconds=it.get("rest_seconds", it.get("restSeconds", 0)),
                         cue_override=it.get("cue_override", it.get("cue")),
                     ),
                 )

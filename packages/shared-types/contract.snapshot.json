@@ -235,6 +235,11 @@
           "optional": false
         },
         {
+          "key": "restSeconds",
+          "kind": "number",
+          "optional": true
+        },
+        {
           "key": "cue",
           "kind": "string",
           "optional": true

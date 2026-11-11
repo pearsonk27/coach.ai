@@ -152,12 +152,14 @@
     "position",
     "exercise",
     "workSeconds",
+    "restSeconds",
     "cue"
    ],
    "pyNames": [
     "position",
     "exercise",
     "work_seconds",
+    "rest_seconds",
     "cue"
    ]
   },

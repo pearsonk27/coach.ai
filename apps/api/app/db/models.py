@@ -206,6 +206,7 @@ class PhaseExercise(Base):
     position = Column(Integer, nullable=False)
     exercise_id = Column(Uuid(), nullable=False)
     work_seconds = Column(Integer, nullable=False)
+    rest_seconds = Column(Integer, nullable=False, server_default=text("0"))
     cue_override = Column(String, nullable=True)
 
 

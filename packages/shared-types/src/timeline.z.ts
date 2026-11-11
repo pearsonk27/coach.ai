@@ -53,7 +53,9 @@ export const BeatSchema = z.discriminatedUnion("kind", [
 export type Beat = z.infer<typeof BeatSchema>;
 export type WorkBeat = z.infer<typeof WorkBeatSchema>;
 
-// design §4 phase_exercise: position, exercise (slug), work_seconds, cue (cue_override).
+// design §4 phase_exercise: position, exercise (slug), work_seconds, rest_seconds, cue (cue_override).
+// rest_seconds is the NEW inter-exercise rest (a break between THIS set and the next one; 0 =
+// continuous) that a single-pass phase (rounds=1) uses to give a rest between every exercise.
 export const PhaseExerciseSchema = z
    .object({
       position: z.number().int(),
@@ -61,6 +63,7 @@ export const PhaseExerciseSchema = z
       // the runtime Beat uses `exerciseRef` — both are the same catalogue slug, keyed differently
       // by the two layers, per the contract's per-surface key map in contract.snapshot.json).
       workSeconds: z.number().int().positive(), // snake: work_seconds
+      restSeconds: z.number().int().nonnegative().default(0), // snake: rest_seconds (inter-exercise rest; 0 = continuous)
       cue: z.string().optional(), // snake: cue (design alias: cue_override)
     })
     .strict();

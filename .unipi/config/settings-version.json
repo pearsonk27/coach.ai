@@ -1,0 +1,19 @@
+{
+  "migrated_version": "3.0.0",
+  "finalized": false,
+  "appliedAt": "2026-11-09T17:04:14.683Z",
+  "log": [
+    {
+      "action": "skipped:missing",
+      "from": "/Users/kristoferpearson/Dev/coach.ai/.unipi/config/compactor.json"
+    },
+    {
+      "action": "skipped:missing",
+      "from": "/Users/kristoferpearson/Dev/coach.ai/.unipi/fusion-preset.json"
+    },
+    {
+      "action": "skipped:missing",
+      "from": "/Users/kristoferpearson/Dev/coach.ai/.unipi/config/background-tasks.json"
+    }
+  ]
+}

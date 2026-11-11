@@ -40,7 +40,7 @@ def test_get_workout_with_beats() -> None:
     body = r.json()
     assert body["beats"] and len(body["beats"]) > 0
     assert body["i2_ok"] is True
-    assert body["total_seconds"] == 1695.0
+    assert body["total_seconds"] == 1155.0
 
 
 def test_workout_beats_are_camelCase() -> None:
@@ -68,7 +68,7 @@ def test_accounts_lifecycle() -> None:
 
     run = client.post("/api/runs", json={"account_id": aid, "template": "hiit-full-body-30"}).json()
     assert run["run"]["i2_ok"] is True
-    assert run["run"]["total_seconds"] == 1695.0
+    assert run["run"]["total_seconds"] == 1155.0
     assert len(run["run"]["beats"]) > 0
 
     fb = client.post(

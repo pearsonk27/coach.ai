@@ -1,11 +1,11 @@
 {
   "slug": "hiit-full-body-30",
-  "name": "HIIT Full-Body · ~30 min",
-  "description": "Fixed-structure HIIT for a home setup: dumbbells, a yoga mat, and a bench. Auto-advancing class: warm-up, two strength circuits, an abs/cardio finisher, and a full cooldown.",
+  "name": "HIIT Full-Body · Single-Pass ~19 min",
+  "description": "Full-body single-pass flow for a home setup: dumbbells, a yoga mat, and a bench. Every exercise is done ONCE with a short rest between each set -- warm-up, two strength circuits, an abs/cardio finisher, and a full cooldown.",
   "goal": "General strength + conditioning for a general-athlete",
   "structure": "fixed-hiit",
   "structure_version": 1,
-  "total_seconds": 1695,
+  "total_seconds": 1155,
   "emphasis": "fullbody",
   "source": "seed",
   "equipment_required": [
@@ -33,7 +33,7 @@
       "position": 0,
       "phase_type": "warmup",
       "title": "Warm-Up & Active Stretch",
-      "description": "Raise body temperature and mobilise hips, shoulders, and spine. Keep it easy and rhythmic.",
+      "description": "Raise body temperature and mobilise hips, shoulders, and spine. Keep it easy and continuous, no rest between.",
       "rounds": 1,
       "rest_seconds": 0,
       "prep_seconds": 10,
@@ -87,9 +87,9 @@
       "position": 1,
       "phase_type": "main_circuit",
       "title": "Circuit A · Main Muscle Groups",
-      "description": "Heavy multi-joint work for quads, chest, back, and glutes. Pick a challenging weight; the last 3 reps of every set should feel hard.",
-      "rounds": 3,
-      "rest_seconds": 30,
+      "description": "Heavy multi-joint work for quads, chest, back, and glutes. Pick a challenging weight; the last 3 reps of every set should feel hard. Rest 30s between each exercise.",
+      "rounds": 1,
+      "rest_seconds": 0,
       "prep_seconds": 10,
       "transition_seconds": 10,
       "items": [
@@ -97,24 +97,28 @@
           "position": 0,
           "exercise": "goblet-squat",
           "work_seconds": 40,
+          "rest_seconds": 30,
           "cue": "Sit back, heels down, chest up; press through the whole foot."
         },
         {
           "position": 1,
           "exercise": "dumbbell-bench-press",
           "work_seconds": 40,
+          "rest_seconds": 30,
           "cue": "Control the eccentric 2s; press up and out."
         },
         {
           "position": 2,
           "exercise": "dumbbell-bent-over-row",
           "work_seconds": 40,
+          "rest_seconds": 30,
           "cue": "Flat back, pull to the hip, squeeze the shoulder blade."
         },
         {
           "position": 3,
           "exercise": "romanian-deadlift",
           "work_seconds": 40,
+          "rest_seconds": 30,
           "cue": "Soft knees, long spine; feel the hamstrings stretch."
         }
       ]
@@ -123,9 +127,9 @@
       "position": 2,
       "phase_type": "accessory_circuit",
       "title": "Circuit B · Accessory & Isolation",
-      "description": "Lighter, higher-rep work to finish the shoulders, arms, and chest with good tempo and control.",
-      "rounds": 2,
-      "rest_seconds": 30,
+      "description": "Lighter, higher-rep work to finish the shoulders, arms, and chest with good tempo and control. Rest 20s between each exercise.",
+      "rounds": 1,
+      "rest_seconds": 0,
       "prep_seconds": 10,
       "transition_seconds": 10,
       "items": [
@@ -133,24 +137,28 @@
           "position": 0,
           "exercise": "dumbbell-lateral-raise",
           "work_seconds": 30,
+          "rest_seconds": 20,
           "cue": "Lead with the elbows; stop below parallel, control the way down."
         },
         {
           "position": 1,
           "exercise": "push-up",
           "work_seconds": 30,
+          "rest_seconds": 20,
           "cue": "Brace the core; full range, straight line."
         },
         {
           "position": 2,
           "exercise": "dumbbell-bicep-curl",
           "work_seconds": 30,
+          "rest_seconds": 20,
           "cue": "No swinging; 2s down, 1s up."
         },
         {
           "position": 3,
           "exercise": "bench-overhead-tricep",
           "work_seconds": 30,
+          "rest_seconds": 20,
           "cue": "Elbows tucked; full overhead stretch without arching."
         }
       ]
@@ -159,9 +167,9 @@
       "position": 3,
       "phase_type": "abs_cardio",
       "title": "Circuit C · Abs & Cardio",
-      "description": "High-intensity finisher. Max effort on the work intervals; full rest between rounds.",
-      "rounds": 3,
-      "rest_seconds": 15,
+      "description": "High-intensity finisher. Max effort on the work intervals; 15s between each exercise.",
+      "rounds": 1,
+      "rest_seconds": 0,
       "prep_seconds": 10,
       "transition_seconds": 10,
       "items": [
@@ -169,24 +177,28 @@
           "position": 0,
           "exercise": "mountain-climbers",
           "work_seconds": 30,
+          "rest_seconds": 15,
           "cue": "Hips level, knees to the floor, quick feet."
         },
         {
           "position": 1,
           "exercise": "renegade-row",
           "work_seconds": 30,
+          "rest_seconds": 15,
           "cue": "Brace the body; pull to the hip, no twist."
         },
         {
           "position": 2,
           "exercise": "side-plank",
           "work_seconds": 30,
+          "rest_seconds": 15,
           "cue": "Straight line; hold the top of each side."
         },
         {
           "position": 3,
           "exercise": "jump-squat",
           "work_seconds": 30,
+          "rest_seconds": 15,
           "cue": "Explode up, land soft, immediately turn over."
         }
       ]
@@ -195,7 +207,7 @@
       "position": 4,
       "phase_type": "static_stretch",
       "title": "Static Cooldown",
-      "description": "Long, slow, breath-focussed holds. No bouncing. Breathe deep and let the body wind down.",
+      "description": "Long, slow, breath-focussed holds. No bouncing. Continuous, no rest between.",
       "rounds": 1,
       "rest_seconds": 0,
       "prep_seconds": 5,

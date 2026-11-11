@@ -540,6 +540,113 @@
         "Breathe"
       ],
       "gif_url": null
+    },
+    {
+      "slug": "reverse-lunge",
+      "name": "Reverse Lunge",
+      "difficulty": 2,
+      "intensity": 7,
+      "muscle_groups": [
+        "quads",
+        "glutes"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Soft landing",
+        "Knee tracks the toes"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "high-knees",
+      "name": "High Knees",
+      "difficulty": 1,
+      "intensity": 8,
+      "muscle_groups": [
+        "calves",
+        "core"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Drive the knees high",
+        "Fast feet"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "burpee",
+      "name": "Burpee",
+      "difficulty": 3,
+      "intensity": 9,
+      "muscle_groups": [
+        "chest",
+        "core",
+        "quads"
+      ],
+      "equipment": [
+        "bodyweight"
+      ],
+      "cues": [
+        "Explode up",
+        "Land soft"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "plank",
+      "name": "Plank",
+      "difficulty": 2,
+      "intensity": 6,
+      "muscle_groups": [
+        "core"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Straight line",
+        "Brace the core"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "dead-bug",
+      "name": "Dead Bug",
+      "difficulty": 2,
+      "intensity": 4,
+      "muscle_groups": [
+        "core"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Press the low back down",
+        "Controlled reach"
+      ],
+      "gif_url": null
+    },
+    {
+      "slug": "bird-dog",
+      "name": "Bird Dog",
+      "difficulty": 1,
+      "intensity": 3,
+      "muscle_groups": [
+        "core",
+        "glutes"
+      ],
+      "equipment": [
+        "mat"
+      ],
+      "cues": [
+        "Long spine",
+        "Reach the opposite hand and leg"
+      ],
+      "gif_url": null
     }
   ]
 }

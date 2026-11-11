@@ -138,7 +138,7 @@ class MusicRef(Base):
 # (oEmbed of a public URL); `embed_url` null/absent means the client plays silence.
 class MusicResolveResponse(Base):
     provider: MusicProvider
-    embed_url: Optional[str] = None     # alias: embedUrl (public oEmbed URL, or None=silence)
+    embed_url: Optional[str] = None  # alias: embedUrl (public oEmbed URL, or None=silence)
     volume: Optional[float] = None
     start_on: Optional[StartOn] = None  # alias: startOn
     loop: Optional[bool] = None
@@ -198,6 +198,7 @@ class PhaseExercise(Base):
     exercise: str  # catalogue exercise slug (PhaseExercise keys it `exercise`;
     # the runtime Beat keys the same slug `exerciseRef` -- see snapshot key map)
     work_seconds: int  # alias: workSeconds
+    rest_seconds: int = 0  # alias: restSeconds; inter-exercise rest (0 = continuous)
     cue: Optional[str] = None  # design alias: cue_override
 
 

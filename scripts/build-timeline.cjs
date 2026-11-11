@@ -8,7 +8,8 @@
 // template (params == {}). Design D1/D2/D6.
 //
 // Closed form per phase (== the emission below):
-//   phase_total = prep + rounds*work + (rounds-1)*rest + transition      (seconds)
+//   phase_total = prep + rounds*(Σwork + Σ inter-exercise rest) + (rounds-1)*inter-round rest
+//                + transition      (seconds)
 // and total_seconds = Σ phase_total. Beats carry durationMs; a beat array with every second
 // ×1000 sums to total_seconds*1000, so I2 follows by construction.
 const _MS = 1000;
@@ -32,6 +33,10 @@ function paramsFrom(data) {
 
 function workSeconds(item) {
    return Number("work_seconds" in item ? item.work_seconds : item.workSeconds ?? 0);
+}
+
+function itemRestSeconds(item) {
+   return Number("rest_seconds" in item ? item.rest_seconds : item.restSeconds ?? 0);
 }
 
 function cueFor(item, catalog) {
@@ -74,6 +79,17 @@ function beatsForPhase(phase, catalog, p) {
          const cue = cueFor(item, catalog);
          if (cue) beat.cue = cue;
          beats.push(beat);
+         // inter-exercise rest: the break between THIS set and the next one in the phase. A
+         // single-pass phase is just work->rest pairs; a multi-round phase adds the inter-round
+         // rest back-to-back below.
+         const itemRestMs = scaleFloor(itemRestSeconds(item), p.restScale) * _MS;
+         if (itemRestMs) {
+            beats.push({
+               id: `p${pos}-r${r}-e${item.position}-rest`,
+               kind: "rest",
+               durationMs: itemRestMs,
+            });
+         }
       }
       if (r < rounds && restMs) {
          beats.push({ id: `p${pos}-r${r}-rest`, kind: "rest", durationMs: restMs });

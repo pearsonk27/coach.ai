@@ -1,11 +1,11 @@
 {
   "slug": "stretch-reset-15",
-  "name": "Stretch Reset · ~15 min",
-  "description": "A short daily reset: an active warm-up, deep static holds, and a spinal/hip mobility finisher. Pairs with the HIIT class as the weekly 'stretch reset' slot.",
+  "name": "Stretch Reset · Single-Pass ~13 min",
+  "description": "A short daily reset: an active warm-up, deep static holds, and a spinal/hip mobility finisher -- every exercise done once. Pairs with the HIIT class as the weekly 'stretch reset' slot.",
   "goal": "Recovery, full-body mobility, and flexibility",
   "structure": "freeform",
   "structure_version": 1,
-  "total_seconds": 895,
+  "total_seconds": 775,
   "source": "seed",
   "emphasis": "recovery",
   "equipment_required": [
@@ -29,7 +29,7 @@
       "position": 0,
       "phase_type": "warmup",
       "title": "Active Warm-up",
-      "description": "Gentle movement to prime the joints before the holds. Easy and continuous.",
+      "description": "Gentle movement to prime the joints before the holds. Easy and continuous, no rest between.",
       "rounds": 1,
       "rest_seconds": 0,
       "prep_seconds": 10,
@@ -71,7 +71,7 @@
       "position": 1,
       "phase_type": "static_stretch",
       "title": "Deep Static Reset",
-      "description": "Long, slow, breath-focussed holds. No bouncing. Breathe deep into each position.",
+      "description": "Long, slow, breath-focussed holds. No bouncing. Breathe deep into each position. Continuous, no rest between.",
       "rounds": 1,
       "rest_seconds": 0,
       "prep_seconds": 0,
@@ -112,18 +112,6 @@
           "exercise": "seated-spinal-twist",
           "work_seconds": 60,
           "cue": "Lengthen the spine first, then rotate; breathe."
-        },
-        {
-          "position": 6,
-          "exercise": "worlds-greatest-stretch",
-          "work_seconds": 60,
-          "cue": "Deep hip open, slow and controlled."
-        },
-        {
-          "position": 7,
-          "exercise": "cat-cow",
-          "work_seconds": 60,
-          "cue": "Slow; full range of the spine."
         }
       ]
     },
@@ -131,7 +119,7 @@
       "position": 2,
       "phase_type": "mobility",
       "title": "Spinal & Hip Mobility",
-      "description": "A short dynamic finisher for the spine and hips. Move through the ranges, do not hold.",
+      "description": "A short dynamic finisher for the spine and hips, plus a core control set. Move through the ranges, do not hold. Continuous, no rest between.",
       "rounds": 1,
       "rest_seconds": 0,
       "prep_seconds": 0,
@@ -151,21 +139,21 @@
         },
         {
           "position": 2,
-          "exercise": "hip-flexor-lunge-stretch",
+          "exercise": "dead-bug",
           "work_seconds": 45,
-          "cue": "Rock weight forward and back."
+          "cue": "Press the low back down; controlled reach."
         },
         {
           "position": 3,
-          "exercise": "seated-spinal-twist",
+          "exercise": "bird-dog",
           "work_seconds": 45,
-          "cue": "Gentle rotation both directions."
+          "cue": "Long spine; reach the opposite hand and leg."
         },
         {
           "position": 4,
-          "exercise": "glute-bridge",
+          "exercise": "plank",
           "work_seconds": 45,
-          "cue": "Slow reps; control the tempo."
+          "cue": "Straight line; brace the core."
         }
       ]
     }

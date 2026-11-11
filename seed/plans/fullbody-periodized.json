@@ -8,7 +8,7 @@
   "cadence": {
     "active_sessions_per_week": 3,
     "recovery_sessions_per_week": 1,
-    "note": "3x HIIT (~30 min: upper, lower, full) + 1x Stretch Reset (~15 min) per week"
+    "note": "3x HIIT (single-pass: upper ~18m, lower ~17m, full ~19m) + 1x Stretch Reset (~13m) per week"
   },
   "cycle_weeks": 1,
   "weeks": [

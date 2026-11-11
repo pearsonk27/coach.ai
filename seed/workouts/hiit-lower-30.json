@@ -1,11 +1,11 @@
 {
   "slug": "hiit-lower-30",
-  "name": "HIIT Lower · ~30 min",
-  "description": "Lower-body emphasis day from the 3-day split (upper/lower/full). Hinge and squat heavy, then accessory, an abs/cardio finisher, and a full cooldown. Uses dumbbells + mat.",
+  "name": "HIIT Lower · Single-Pass ~17 min",
+  "description": "Lower-body single-pass flow (upper/lower/full split). Every exercise is done ONCE with a short rest between each set -- hinge and squat heavy, then accessory, an abs/cardio finisher, and a full cooldown. Uses dumbbells + mat.",
   "goal": "Lower-body strength and conditioning",
   "structure": "fixed-hiit",
   "structure_version": 1,
-  "total_seconds": 1605,
+  "total_seconds": 1015,
   "emphasis": "lower",
   "source": "seed",
   "equipment_required": [
@@ -29,7 +29,7 @@
       "position": 0,
       "phase_type": "warmup",
       "title": "Warm-Up & Active Stretch",
-      "description": "Raise body temperature and mobilise hips and spine. Easy and rhythmic.",
+      "description": "Raise body temperature and mobilise hips and spine. Easy and continuous, no rest between.",
       "rounds": 1,
       "rest_seconds": 0,
       "prep_seconds": 10,
@@ -71,9 +71,9 @@
       "position": 1,
       "phase_type": "main_circuit",
       "title": "Circuit A · Hinge & Squat",
-      "description": "Heavy lower-body work for quads, hamstrings, and glutes. Pick a challenging weight; the last 3 reps should feel hard.",
+      "description": "Heavy lower-body work for quads, hamstrings, and glutes. Pick a challenging weight; the last 3 reps should feel hard. Rest 30s between each exercise.",
       "rounds": 3,
-      "rest_seconds": 30,
+      "rest_seconds": 0,
       "prep_seconds": 10,
       "transition_seconds": 10,
       "items": [
@@ -81,25 +81,29 @@
           "position": 0,
           "exercise": "goblet-squat",
           "work_seconds": 40,
+          "rest_seconds": 30,
           "cue": "Sit back, heels down, chest up."
         },
         {
           "position": 1,
           "exercise": "romanian-deadlift",
           "work_seconds": 40,
+          "rest_seconds": 30,
           "cue": "Soft knees, long spine; feel the hamstring stretch."
         },
         {
           "position": 2,
           "exercise": "jump-squat",
           "work_seconds": 40,
+          "rest_seconds": 30,
           "cue": "Explode up, land soft, turn over."
         },
         {
           "position": 3,
-          "exercise": "glute-bridge",
+          "exercise": "reverse-lunge",
           "work_seconds": 40,
-          "cue": "Squeeze the glutes at the top for 1s."
+          "rest_seconds": 30,
+          "cue": "Soft landing; knee tracks the toes."
         }
       ]
     },
@@ -107,35 +111,32 @@
       "position": 2,
       "phase_type": "accessory_circuit",
       "title": "Circuit B · Accessory",
-      "description": "Lighter work to finish the legs and warm the rest of the body for the finisher.",
-      "rounds": 2,
-      "rest_seconds": 30,
+      "description": "Lighter work to finish the legs and warm the rest of the body for the finisher. Rest 20s between each exercise.",
+      "rounds": 3,
+      "rest_seconds": 0,
       "prep_seconds": 10,
       "transition_seconds": 10,
       "items": [
         {
           "position": 0,
-          "exercise": "glute-bridge",
+          "exercise": "dumbbell-bent-over-row",
           "work_seconds": 30,
-          "cue": "Controlled tempo; 1s at the top."
+          "rest_seconds": 20,
+          "cue": "Flat back, pull to the hip, squeeze the blade."
         },
         {
           "position": 1,
-          "exercise": "bodyweight-leg-swing",
+          "exercise": "side-plank",
           "work_seconds": 30,
-          "cue": "Let momentum lead through the range."
+          "rest_seconds": 20,
+          "cue": "Straight line; hold the top."
         },
         {
           "position": 2,
-          "exercise": "inching-worm",
+          "exercise": "dumbbell-lateral-raise",
           "work_seconds": 30,
-          "cue": "Glute-drive back out."
-        },
-        {
-          "position": 3,
-          "exercise": "light-jumping-jacks",
-          "work_seconds": 30,
-          "cue": "Keep the heart-pump moderate."
+          "rest_seconds": 20,
+          "cue": "Lead with the elbows; stop below parallel."
         }
       ]
     },
@@ -143,35 +144,39 @@
       "position": 3,
       "phase_type": "abs_cardio",
       "title": "Circuit C · Abs & Cardio",
-      "description": "High-intensity finisher. Max effort on the work intervals; full rest between rounds.",
+      "description": "High-intensity finisher. Max effort on the work intervals; 15s between each exercise.",
       "rounds": 3,
-      "rest_seconds": 15,
+      "rest_seconds": 0,
       "prep_seconds": 10,
       "transition_seconds": 10,
       "items": [
         {
           "position": 0,
           "exercise": "mountain-climbers",
-          "work_seconds": 30,
+          "work_seconds": 45,
+          "rest_seconds": 15,
           "cue": "Hips level, knees to the floor, quick feet."
         },
         {
           "position": 1,
           "exercise": "renegade-row",
-          "work_seconds": 30,
+          "work_seconds": 45,
+          "rest_seconds": 15,
           "cue": "Brace the body; pull to the hip."
         },
         {
           "position": 2,
-          "exercise": "side-plank",
-          "work_seconds": 30,
-          "cue": "Straight line; hold each side."
+          "exercise": "high-knees",
+          "work_seconds": 45,
+          "rest_seconds": 15,
+          "cue": "Drive the knees high; fast feet."
         },
         {
           "position": 3,
-          "exercise": "jump-squat",
-          "work_seconds": 30,
-          "cue": "Explode up, land soft, turn over."
+          "exercise": "burpee",
+          "work_seconds": 45,
+          "rest_seconds": 15,
+          "cue": "Explode up, land soft."
         }
       ]
     },
@@ -179,7 +184,7 @@
       "position": 4,
       "phase_type": "static_stretch",
       "title": "Static Cooldown",
-      "description": "Long, slow, breath-focussed holds. No bouncing.",
+      "description": "Long, slow, breath-focussed holds. No bouncing. Continuous, no rest between.",
       "rounds": 1,
       "rest_seconds": 0,
       "prep_seconds": 5,
@@ -211,9 +216,9 @@
         },
         {
           "position": 4,
-          "exercise": "cat-cow",
+          "exercise": "seated-spinal-twist",
           "work_seconds": 30,
-          "cue": "Slow; full range of the spine."
+          "cue": "Lengthen, then rotate; breathe."
         }
       ]
     }

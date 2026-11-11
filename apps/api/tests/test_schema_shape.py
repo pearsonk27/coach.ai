@@ -67,6 +67,7 @@ EXPECTED_COLUMNS: dict[str, list[str]] = {
         "position",
         "exercise_id",
         "work_seconds",
+        "rest_seconds",
         "cue_override",
     ],
     "workout_plan": [

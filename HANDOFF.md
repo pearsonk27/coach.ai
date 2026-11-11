@@ -20,6 +20,26 @@ unstyled UI. All three are now real:
 skipped) both pass. Skips are the PG persistence smoke, which degrades cleanly — no PG18 cluster
 runs locally.
 
+### T-rest — single-pass seed + inter-exercise rest (DONE, two languages)
+The seed circuits were **multi-round** (e.g. main_circuit `rounds: 3`), so (a) every exercise ran
+`rounds` times and (b) rest only landed *between rounds*, never *between the individual exercises*
+the user was cycling through. Fix: make every seed phase **single-pass** (`rounds: 1`) and add a
+**per-item `rest_seconds`** on `phase_exercise` so each exercise is followed by its own rest beat.
+- **Engine (both halves):** new inter-exercise rest beat `p{pos}-r{r}-e{n}-rest` emitted after each
+  work beat; closed form is now `prep + rounds*(Σwork + Σ item.rest) + (rounds-1)*inter-round + transition`.
+  `rest_scale` scales inter-exercise rest too; inter-round rest still only fires when `rounds > 1`.
+- **Contract:** `rest_seconds` added to `PhaseExercise` on all 4 sides (TS Zod / Pydantic / TS
+  manifest / Py manifest / snapshot) — `contract-drift.cjs` stays green.
+- **DB:** `phase_exercise.rest_seconds INTEGER NOT NULL DEFAULT 0` via migration `0002`;
+  `EXPECTED_COLUMNS` + `seed_all` updated; verified the round-trip applies and downgrades.
+- **Seed:** every phase `rounds: 1`, per-item `rest_seconds` (circuits 15–30s, flowing holds 0).
+  6 new catalog exercises added so single-pass phases stay full **without repeating an exercise**.
+  New guard **I5** in `check-invariants.cjs` (mirrored in `test_build_timeline.py`) fails if any
+  exercise appears twice in one template. New totals: full-body 1155s · lower 1015s · upper 1105s ·
+  stretch-reset 775s.
+- **Engine test:** `rounds_mult` moved to a synthetic 3-round template (single-pass seed can't shrink
+  below 1 round). Python + Node beat sequences verified byte-identical over all 4 seeds.
+
 ### T-01b — Pydantic v2 discriminated-union mirror (DONE)
 `apps/api/app/contracts/schema.py`: the T-10 latent bug is fixed.
 - `Beat` union now uses `Annotated[Union[...], Discriminator("kind")]` (not the v1
